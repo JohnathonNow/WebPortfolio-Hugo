@@ -13,6 +13,8 @@ really don't want to have gone an entire year with no blog post. So, I
 figured I'd do a write-up of everything I have done since the world ended,
 mostly with the intent of it being a reminder that I actually did stuff.
 
+<!--more-->
+
 # The Before Times
 
 So, immediately before the world ended, I had just been starting on my second
