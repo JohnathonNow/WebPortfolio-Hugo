@@ -71,7 +71,7 @@ off craigslist for $20, and then my wife painted and covered with spook-fuzz.
 # OK But Computers Tho?
 
 It was also late-June that I started teaching Java programming to my old
-high school robotics team, [FRC Team 2607, The Fighting RoboVikings](robovikings.com).
+high school robotics team, [FRC Team 2607, The Fighting RoboVikings](https://robovikings.com).
 The class has five or so students who attend regularly, and it has been going
 relatively smoothly. More recently I've been having them work on 
 [a chatbot](https://github.com/JohnathonNow/FRC2607_DiscordBot).
