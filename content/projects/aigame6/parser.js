@@ -117,6 +117,7 @@ var globals = {"nil": new Node("list","",0)};
 var gFunMap = {
     ""       : _user,
     "def"    : _def,
+    "set"    : _set,
     "isdef?" : _isdef,
     "+"      : _add,
     "-"      : _sub,
@@ -299,6 +300,16 @@ function _isdef(c, n) {
         if (n.children[1].value in c.stack[i]) {
             n.eval.value = true;
             break;
+        }
+    }
+}
+function _set(c, n) {
+    for (var j = 1; j < n.children.length; j+=2) {
+        for (var i = c.stack.length - 1; i >= 0; i--) {
+            if (c.stack[i] && (n.children[j].value in c.stack[i])) {
+                c.stack[i][n.children[j].value] = _eval(c, n.children[j+1]).eval;
+                break;
+            }
         }
     }
 }
