@@ -117,6 +117,7 @@ var globals = {"nil": new Node("list","",0)};
 var gFunMap = {
     ""       : _user,
     "def"    : _def,
+    "ldef"    : _ldef,
     "set"    : _set,
     "isdef?" : _isdef,
     "+"      : _add,
@@ -180,12 +181,31 @@ function _eval(c, n) {
             n.eval = n;
             return n;
         case "identifier":
+            const parts = n.value.split(".");
+            if (parts.length == 2) {
+                if (parts[0] == "obj1") {
+                    console.log("oh ok.. " +parts[1]);
+                }
+                var f = null;
+                for (var i = c.stack.length - 1; i >= 0; i--) {
+                    if (c.stack[i] && (parts[0] in c.stack[i])) {
+                        f = c.stack[i][parts[0]];
+                        break;
+                    }
+                }
+                console.log(f.context);
+                if (f && f.context && (parts[1] in f.context)) {
+                    n.eval = f.context[parts[1]];
+                    return n;
+                }
+            } 
             for (var i = c.stack.length - 1; i >= 0; i--) {
                 if (c.stack[i] && (n.value in c.stack[i])) {
                     n.eval = c.stack[i][n.value];
                     return n;
                 }
             }
+
             return n;
         case "function":
             if (n.children[0].type === "function") {
@@ -311,6 +331,12 @@ function _set(c, n) {
                 break;
             }
         }
+    }
+}
+function _ldef(c, n) {
+    const i = c.stack.length - 2;
+    for (var j = 1; j < n.children.length; j+=2) {
+        c.stack[i][n.children[j].value] = _eval(c, n.children[j+1]).eval;
     }
 }
 function _def(c, n) {

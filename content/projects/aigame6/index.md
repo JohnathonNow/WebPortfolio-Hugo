@@ -25,7 +25,8 @@ with the possibility that yet another FIRST Robotics competition
 season is cancelled, I think the time is now to come up with some kind
 of robotics related competition that can be done poorly virtually.
 
-I've only added one feature to the language, the `set` built-in function.
+I've only added one feature to the language - the ability to modify variables
+at more local scopes than global. For instance, the `set` built-in function.
 `set` behaves very similarly to `def`, which defines one or more variables
 in global scope. `set`, on the other hand, re-defines variables in the
 closest scope it can. This means it is now possible to have a closure
@@ -33,58 +34,37 @@ change one of its captured variables, meaning it is now possible to
 pretend to have mutable objects through closures. This is pretty cool,
 and it only took a minute or so of work.
 
-{{< editor >}};;;;A demo for driving a little car robot
-;;define the IDs of the six wheels
-(def lf (part# 3) ;the left front wheel is the third part of the robot
-     rf (part# 4) ;the right front wheel is the fourth
-     lm (part# 5) ;the left middle is the fifth
-     rm (part# 6) ;right middle
-     lb (part# 7) ;left back
-     rb (part# 8) ;right back
-)
+Additionally, I added dot notation for closures, so you can say `obj.x`
+to get the value of the variable x captured by closure obj. This was
+done in a hacky and bad way, but it does work as long as there is only
+one level of indirection. Finally, I added another def command, ldef,
+which is like set or def, but it adds a variable to the most local scope.
+This is useful for closures having their own state that is separate
+from their creating function.
+
+{{< editor >}};;;;A demo for showing closures
 ;;define a function named obj
 ;;that returns a closure
 ;;that pretends to be an object with a getter and setter
-(def obj (fun '(x) 
+(def obj (fun '(x) (do
+    (ldef y 2607)
     (fun '(f a...) (switch f '()
         "get" x
         "set" (set x (car a))
     ))
-))
-;;create two instances of our "object"
-(def obj1 (obj 0))
-(def obj2 (obj 10))
-
-(def gs (part# 9)) ;define gyroscope
-;;define two helper functions for controlling the robot like a tank
-;;each take a speed in the range [-1, 1]
-(def left  (fun '(speed) (do (lf speed) (lm speed) (lb speed)))
-     right (fun '(speed) (do (rf speed) (rm speed) (rb speed))))
-
-;;define the function that gets called every iteration of the game loop
-;;it must be called run - it must take no arguments,
-;;and it can alter global state
-(def run (fun '() (do
-  ;be a finite state machine and store the state in the variable STATE
-  (state STATE "START_STRAIGHT" ;default state is "START_STRAIGHT"
-   ;when state is start straight go forward and set the timer to 50, goto straight
-   "START_STRAIGHT"  (do (left -0.6) (right 0.6) (def time 50) "STRAIGHT")
-   ;when the state is straight, subtract 1 from time, if it is below 0 go to start turn
-   "STRAIGHT"        (do (def time (- time 1)) (if (> 0 time) "START_TURN" "STRAIGHT"))
-   ;when state is start turn, set wheels to turn and set the timer to 50, go to turn
-   "START_TURN"      (do (left 0.6) (right 0.6) (def time 12) "TURN")
-   ;when state is turn, subtract 1 from time, if it is below 0 go to start straight
-   "TURN"            (do (def time (- time 1)) (if (> 0 time) "START_STRAIGHT" "TURN"))
-  )
-  ;print out some pretty stuff
-  ((obj1 "set" (+ 1 (obj1 "get"))))
-  (log (+ "obj1.x is " (obj1 "get")))
-  (log (+ "obj2.x is " (obj2 "get")))
-  (log (+ "current gyro reading is " (gs)))
 )))
+
+(def str "")                                    ;define an empty string to store a message
+(def obj1 (obj 23))                             ;construct an obj with x=23 named obj1
+(def str (+ str "After constructor, obj1.x is " 
+    obj1.x "&lt;br&gt;"))                             ;add the value to our message
+(obj1 "set" 14)                                 ;set obj1.x to 14
+(def str (+ str "After set, obj1.x is " obj1.x 
+    "&lt;br&gt;"))                                    ;add the new value to our message
+(def str (+ str "obj1.y is " obj1.y))           ;add the value of obj1.y to the message
+str                                             ;return our nice string
 {{< /editor >}}
 
-{{< game >}}
 
 Going forward, I'd like to add more sensors and actuators. I wonder if
 some kind of fake electrical subsystem is worth adding. The game does use
@@ -93,3 +73,4 @@ there could be different motors, giving more mechanically inclined people
 something to do. A 3D game would probably be better for this stuff, but
 that's hard considering the game being in-browser was a major goal of mine
 (lots of people use Chromebooks or tablets).
+
