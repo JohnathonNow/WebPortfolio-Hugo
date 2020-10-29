@@ -13,6 +13,27 @@ editor.setTheme("ace/theme/chrome");
 editor.setAutoScrollEditorIntoView(true);
 editor.setOption("maxLines", 30);
 editor.getSession().setMode("ace/mode/lisp");
+
+var code = new URL(window.location).searchParams.get("code");
+if (code) {
+        editor.setValue(code, new Number('0'));
+} else {
+    var b64 = new URL(window.location).searchParams.get("b64");
+    if (b64) {
+        editor.setValue(atob(b64), new Number('0'));
+    } else {
+        var pb = new URL(window.location).searchParams.get("pb");
+        if (pb) {
+            console.log("going for it");
+            $.get("https://www.johnwesthoff.com/api/pb/", {'id': pb}, function(result, status){
+                console.log(result);
+                console.log(status);
+                editor.setValue(result, new Number('0'));
+          });
+        }
+    }
+}
 </script>
 <button id="but" onclick="var e = eval(parse(ace.edit('editor{{ .Get 0 }}').getValue())); $('#tb{{ .Get 0 }}').html('Result: <code>'+stringify(e)+'</code>');">Run</button>
+<button id="butshr" onclick="var t = ace.edit('editor{{ .Get 0 }}').getValue(); $.post('https://www.johnwesthoff.com/api/pb/', {'raw': t}, function(result, status){ history.pushState({}, document.title, window.location.href.split('?')[0] + '?pb=' + encodeURIComponent(result));  });" > Share</button>
 <div id="tb{{ .Get 0 }}">Result: </div>
