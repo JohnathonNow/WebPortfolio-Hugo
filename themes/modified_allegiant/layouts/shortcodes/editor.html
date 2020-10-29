@@ -34,6 +34,6 @@ if (code) {
     }
 }
 </script>
+<div id="tb{{ .Get 0 }}"></div>
 <button id="but" onclick="var e = eval(parse(ace.edit('editor{{ .Get 0 }}').getValue())); $('#tb{{ .Get 0 }}').html('Result: <code>'+stringify(e)+'</code>');">Run</button>
 <button id="butshr" onclick="var t = ace.edit('editor{{ .Get 0 }}').getValue(); $.post('https://www.johnwesthoff.com/api/pb/', {'raw': t}, function(result, status){ history.pushState({}, document.title, window.location.href.split('?')[0] + '?pb=' + encodeURIComponent(result));  });" > Share</button>
-<div id="tb{{ .Get 0 }}">Result: </div>
