@@ -1,7 +1,7 @@
 +++
 date = "2017-06-19T23:24:00-04:00"
 draft = false
-title = "AI Game Components"
+title = "AI Game 2 - Components"
 tags = [ "Projects" ]
 categories = [ "For Fun" ]
 series = [ "AI Game" ]

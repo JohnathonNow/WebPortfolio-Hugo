@@ -1,7 +1,7 @@
 +++
 date = "2020-10-28T22:24:00-04:00"
 draft = false
-title = "AI Game Recovery"
+title = "AI Game 6 - Recovery"
 tags = [ "Projects" ]
 categories = [ "For Fun", "Interactable" ]
 series = [ "AI Game" ]
