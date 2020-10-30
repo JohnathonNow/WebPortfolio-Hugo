@@ -165,10 +165,16 @@ function eval(root) {
 
 function _lookup(c, n) {
     const parts = n.value.split(".");
+    var ores = null;
     var res = null
     for (var k = 0; k < parts.length; k++) {
         var x = parts[k];
+        if (x === "" && res && res.eval) { //blank path parts are derefs
+            x = res.eval.value;
+            res = ores;
+        }
         console.log(x);
+        ores = res;
         if (res && res.context && (x in res.context)) {
             res = res.context[x];
         } else {
