@@ -150,7 +150,6 @@ function eval(root) {
     try {
         if (root) {
             l = root.line;
-            console.log(l);
             var result = _eval(context, root);
         }
     } catch(err) {
@@ -173,7 +172,6 @@ function _lookup(c, n) {
             x = res.eval.value;
             res = ores;
         }
-        console.log(x);
         ores = res;
         if (res && res.context && (x in res.context)) {
             res = res.context[x];
@@ -265,7 +263,6 @@ function _call(c, n) {
 function _named(c, n) {
     n.value = n.children[0].value;
     var fn = _lookup(c, n);
-    console.log(n);
     if (fn.type === "part") {
         _call(c, n);
     } else {
