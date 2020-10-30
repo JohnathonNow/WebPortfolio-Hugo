@@ -22,8 +22,8 @@ function start() {
         if (!runner) {
             $("#but").text("Reload Script");
         }
-        runner = new Node("function", "");
-        runner.children = [new Node("identifier", "run")];
+        runner = new Node("function", "", 0);
+        runner.children = [new Node("identifier", "run", 0)];
     }
 }
 
@@ -108,7 +108,10 @@ function create() {
 
 function update() {
     (typeof telem_clear != 'undefined') && telem_clear();
-    (typeof runner != 'undefined') && eval(runner);
+    if (typeof runner != 'undefined') {
+        var res = eval(runner);
+        if (res) console.log(res);
+    }
     for (var i = 0; i < all_parts.length; i++) {
         if (all_parts[i].robot_speed != 0) {
             all_parts[i].body.thrust(all_parts[i].robot_speed * THRUST_VAL);
@@ -132,17 +135,17 @@ gFunMap['go'] = function(c, n) {
     if (n.children.length > 2) {
         n.eval = _eval(c, n.children[2]).eval;
         var val = Math.min(Math.max(n.eval.value, -1), 1);
-        n.eval = new Node("float", val);
+        n.eval = new Node("float", val, 0);
         if (all_parts[which].type == "wheel") {
             all_parts[which].robot_speed = (val);
         }
     } else {
-        n.eval = new Node("float", all_parts[which].robot_speed);
+        n.eval = new Node("float", all_parts[which].robot_speed, 0);
     }
 }
 gFunMap['part#'] = function(c, n) {
     var which = _eval(c, n.children[1]).eval.value;
-    n.eval = new Node("part", all_parts[which]);
+    n.eval = new Node("part", all_parts[which], 0);
 }
 function part(c, n) {
     var which = n.children[0].eval.value;
@@ -150,15 +153,15 @@ function part(c, n) {
         if (n.children.length > 1) {
             n.eval = _eval(c, n.children[1]).eval;
             var val = Math.min(Math.max(n.eval.value, -1), 1);
-            n.eval = new Node("float", val);
+            n.eval = new Node("float", val, 0);
             if (which.type == "wheel") {
                 which.robot_speed = (val);
             }
         } else {
-            n.eval = new Node("float", which.robot_speed);
+            n.eval = new Node("float", which.robot_speed, 0);
         }
     } else {
-        n.eval = new Node("float", which.mom.body.angularVelocity);
+        n.eval = new Node("float", which.mom.body.angularVelocity, 0);
     }
 }
 
