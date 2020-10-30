@@ -154,12 +154,33 @@ function eval(root) {
             var result = _eval(context, root);
         }
     } catch(err) {
+        console.log(err);
         return new Node('error', "ERR: Could not evaluate!", l);
     }
     if (context.stack.length != 2) {
         return new Node('error', "ERR: Stack Leak!", root.line);
     }
     return result;
+}
+
+function _lookup(c, n) {
+    const parts = n.value.split(".");
+    var res = null
+    for (var k = 0; k < parts.length; k++) {
+        var x = parts[k];
+        console.log(x);
+        if (res && res.context && (x in res.context)) {
+            res = res.context[x];
+        } else {
+            for (var i = c.stack.length - 1; i >= 0; i--) {
+                if (c.stack[i] && (x in c.stack[i])) {
+                    res = c.stack[i][x];
+                    break;
+                }
+            }
+        } 
+    }
+    return res;
 }
 
 function _eval(c, n) {
@@ -181,31 +202,7 @@ function _eval(c, n) {
             n.eval = n;
             return n;
         case "identifier":
-            const parts = n.value.split(".");
-            if (parts.length == 2) {
-                if (parts[0] == "obj1") {
-                    console.log("oh ok.. " +parts[1]);
-                }
-                var f = null;
-                for (var i = c.stack.length - 1; i >= 0; i--) {
-                    if (c.stack[i] && (parts[0] in c.stack[i])) {
-                        f = c.stack[i][parts[0]];
-                        break;
-                    }
-                }
-                console.log(f.context);
-                if (f && f.context && (parts[1] in f.context)) {
-                    n.eval = f.context[parts[1]];
-                    return n;
-                }
-            } 
-            for (var i = c.stack.length - 1; i >= 0; i--) {
-                if (c.stack[i] && (n.value in c.stack[i])) {
-                    n.eval = c.stack[i][n.value];
-                    return n;
-                }
-            }
-
+            n.eval =_lookup(c, n);
             return n;
         case "function":
             if (n.children[0].type === "function") {
@@ -260,13 +257,9 @@ function _call(c, n) {
     }
 }
 function _named(c, n) {
-    var fn = null;
-    for (var i = c.stack.length - 1; i >= 0; i--) {
-        if (n.children[0].value in c.stack[i]) {
-            fn = c.stack[i][n.children[0].value];
-            break;
-        }
-    }
+    n.value = n.children[0].value;
+    var fn = _lookup(c, n);
+    console.log(n);
     if (fn.type === "part") {
         _call(c, n);
     } else {
