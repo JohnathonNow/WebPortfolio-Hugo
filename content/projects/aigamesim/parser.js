@@ -184,7 +184,7 @@ function _lookup(c, n) {
             }
         } 
     }
-    return res;
+    return res || n;
 }
 
 function _eval(c, n) {
