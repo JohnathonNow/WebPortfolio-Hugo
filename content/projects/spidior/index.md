@@ -49,7 +49,7 @@ You would also be able to do that with fields and other such things.
 To rename client to session properly, I could do:
 `%s/[[name=client;type=Session]]/session/g`
 
-Which says, for everywhere, replace any identifier named client of the time Session
+Which says, for everywhere, replace any identifier named client of the type Session
 with the name session.
 
 ## The Soltuion
