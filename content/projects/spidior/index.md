@@ -1,6 +1,6 @@
 +++
 date = "2021-01-29T23:11:00-04:00"
-draft = true
+draft = false
 title = "Spidior: Because Regex Wasn't Awful Enough"
 tags = [ "Projects" ]
 categories = [ "For Fun", "Programming Languages", "Tools", "Rust" ]
