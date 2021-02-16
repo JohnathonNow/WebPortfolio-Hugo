@@ -1,5 +1,5 @@
 +++
-date = "2020-02-15T06:04:14-04:00"
+date = "2021-02-15T06:04:14-04:00"
 draft = false
 title = "The Unlikely Cost of Hobby Software Development"
 heading = "Blog"
