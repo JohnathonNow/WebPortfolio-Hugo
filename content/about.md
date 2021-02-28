@@ -18,7 +18,7 @@ I once served as the <s>mascot</s> secretary for the
 [Notre Dame Linux Users Group](http://ndlug.org/), and they're
 the ones who started calling me Jeffrey. After graduating from Notre Dame,
 I <s>spent the summer running around chanting "37-0" until the Michigan season opener</s><sup>1</sup> started
-my PhD studies at NYU, where I will be starting my third year in the Fall.
+my PhD studies at NYU.
 
 My research interests lie broadly in systems. I've been exploring whether edge computing is useful for anything besides web caching, and what software written for the edge should look like.
 
