@@ -181,7 +181,7 @@ gFunMap['log'] = function(c, n) {
 gFunMap['button'] = function(c, n) {
     var name = stringify(_eval(c, n.children[1]).eval);
     var func = stringify(_eval(c, n.children[2]).eval);
-    $('#telem').html($('#telem').html() + '<button onmousedown=\'eval("(' + func + ')")\'>' + name + '</button><br>');
+    $('#telem').html($('#telem').html() + '<button onmousedown=\'eval(parse("(' + func + ')"))\'>' + name + '</button><br>');
 }
 function telem_clear(c, n) {
     $('#telem').empty();
