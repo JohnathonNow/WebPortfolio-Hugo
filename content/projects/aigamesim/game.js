@@ -110,7 +110,6 @@ function update() {
     (typeof telem_clear != 'undefined') && telem_clear();
     if (typeof runner != 'undefined') {
         var res = eval(runner);
-        if (res) console.log(res);
     }
     for (var i = 0; i < all_parts.length; i++) {
         if (all_parts[i].robot_speed != 0) {
