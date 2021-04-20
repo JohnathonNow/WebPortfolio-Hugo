@@ -1,5 +1,5 @@
 +++
-date = "2020-05-24T02:03:30-04:00"
+date = "2021-04-07T02:03:30-04:00"
 draft = false
 title = "TIL Collection"
 heading = "Blog"
@@ -21,6 +21,18 @@ touch them at all. This post will be different - by design it will be updated oc
 to the front page again. I will also treat it like a stack and put the newest TILs at the top.
 
 Anyway, here I go!
+
+## 2021-04-07
+### TIL that media keys work differently for YouTube and YouTube Music
+
+On YouTube, the pause Media Key works for pausing / unpausing a video regardless
+of what application is in focus, for both Firefox and Google Chrome. But the fast forward
+and rewind Media Keys both only work for the first video in a playlist in both browsers, and
+do not work in single videos or in playlists after the first video.
+
+On YouTube Music, however, all three of Pause / Fast Forward / Rewind work, with the
+FF and RW controls skipping songs. This newfound ability is sure to come in handy with
+my 60% keyboard which lacks those keys all together.
 
 ## 2020-05-24
 ### TIL wood stain... stains

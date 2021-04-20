@@ -33,7 +33,6 @@ Just a place to mess around with the most current version of my [AI Game](https:
     ;;spin fast
     (left 1)
     (right 1)
-  )
   (log (+ "Gyro: " (gs)))
 )))
 {{< /editor >}}
