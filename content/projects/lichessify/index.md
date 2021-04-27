@@ -20,7 +20,7 @@ keeps the [pgn](https://en.wikipedia.org/wiki/Portable_Game_Notation) for each g
 and stores it in a nice variable in javascript. Coupled with the fact that lichess.org has a friendly and public API, I realized I could
 do one better than a browser plugin, I could just write a bookmark. (After all, why waste time write lot code when few code do trick?)
 
-So, I present <a href='(javascript:(function(){var xhr = new XMLHttpRequest(); xhr.open("POST", "https://lichess.org/api/import", true); xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); xhr.send(     "pgn="+encodeURIComponent(window.chesscom.analysis.pgn) ); xhr.onload = function() {    window.location=(JSON.parse(this.responseText).url); }}())'>Lichessify</a>.
+So, I present <a href='javascript:(function(){var xhr = new XMLHttpRequest(); xhr.open("POST", "https://lichess.org/api/import", true); xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); xhr.send(     "pgn="+encodeURIComponent(window.chesscom.analysis.pgn) ); xhr.onload = function() {    window.location=(JSON.parse(this.responseText).url); }}())'>Lichessify</a>.
 
 If you simply save that to your bookmarks bar, whenever you click it while on the chess.com analysis page, it will whisk you away to the lichess.org analysis
 of the very same game, where you can do your analysis free-er of fear of running into pesky daily limits.
