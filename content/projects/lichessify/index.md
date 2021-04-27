@@ -24,3 +24,6 @@ So, I present <a href='javascript:(function(){var xhr = new XMLHttpRequest(); xh
 
 If you simply save that to your bookmarks bar, whenever you click it while on the chess.com analysis page, it will whisk you away to the lichess.org analysis
 of the very same game, where you can do your analysis free-er of fear of running into pesky daily limits.
+
+{{< youtube 3ulnOyOpSxk >}}
+
