@@ -22,7 +22,7 @@ Like, the preview clearly says _youtube.com_!
 
 I figured it is either giving a fake social media blurb to show for the
 link, or it is actually forwarding to youtube.com some of the time.
-If it was the ladder, it could be checking something about the request Facebook
+If it was the latter, it could be checking something about the request Facebook
 sends the webserver to generate the little preview - so I set up a quick experiment.
 
 I ran `nc -l 4000` on `johnwesthoff.com` - this listens on port 4000 and spits out the data being sent there.
@@ -48,7 +48,7 @@ User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:85.0) Gecko/20100101 Fire
 ```
 
 So, what if the evil website is simply checking the User-Agent, and if it is facebookexternalhit then redirect
-them to youtube.com, otherwise let them carry on to our malicious website? To test that, I through together this
+them to youtube.com, otherwise let them carry on to our malicious website? To test that, I threw together this
 php file, which is also available [here](https://johnwesthoff.com/malware):
 
 ```php
