@@ -57,7 +57,7 @@ php file, which is also available [here](https://johnwesthoff.com/malware):
         header('Location: https://youtube.com');
         die();
     }
-    echo "this is a bad website, you should not be here";
+    echo 'this is a bad website, you should not be here';
 ?>
 ```
 
