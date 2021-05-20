@@ -849,3 +849,6 @@ tr td:hover {
         font-size: .95em;
     }
 }
+li > ol { 
+    padding-left: 2em;
+}
