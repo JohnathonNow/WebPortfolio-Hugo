@@ -1,0 +1,31 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export function __wbg_evaluation_free(a: number): void;
+export function __wbg_get_evaluation_piece(a: number): number;
+export function __wbg_set_evaluation_piece(a: number, b: number): void;
+export function __wbg_get_evaluation_slot(a: number): number;
+export function __wbg_set_evaluation_slot(a: number, b: number): void;
+export function __wbg_get_evaluation_wins(a: number): number;
+export function __wbg_set_evaluation_wins(a: number, b: number): void;
+export function __wbg_get_evaluation_losses(a: number): number;
+export function __wbg_set_evaluation_losses(a: number, b: number): void;
+export function __wbg_get_evaluation_ties(a: number): number;
+export function __wbg_set_evaluation_ties(a: number, b: number): void;
+export function evaluation_score(a: number): number;
+export function evaluation_flip(a: number): number;
+export function evaluation_add(a: number, b: number): void;
+export function evaluation_new(a: number, b: number, c: number, d: number, e: number): number;
+export function __wbg_board_free(a: number): void;
+export function board_new(): number;
+export function board_raw(a: number, b: number): void;
+export function board_string(a: number, b: number): void;
+export function board_place(a: number, b: number, c: number): void;
+export function board_is_won(a: number): number;
+export function board_free_columns(a: number, b: number): void;
+export function __wbg_evaluator_free(a: number): void;
+export function evaluator_new(): number;
+export function evaluator_get_move(a: number, b: number, c: number): number;
+export function __wbindgen_add_to_stack_pointer(a: number): number;
+export function __wbindgen_free(a: number, b: number): void;
+export function __wbindgen_exn_store(a: number): void;
