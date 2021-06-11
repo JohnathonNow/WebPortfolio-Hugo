@@ -3,6 +3,7 @@ date = "2021-04-07T02:03:30-04:00"
 draft = false
 title = "TIL Collection"
 heading = "Blog"
+visible = false
 tags = [ "TIL" ]
 categories = [ "TIL" ]
 series = [ "Learning" ]

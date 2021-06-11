@@ -4,7 +4,7 @@ draft = false
 title = "Getting Free Analysis from Games on Chess.com with Lichessify"
 tags = [ "Projects" ]
 categories = [ "For Fun" ]
-series = [ "" ]
+series = [ "Bookmarklets" ]
 +++
 I have been playing like, a normal amount of chess lately. I'm not yet past the "don't just move your queen to her death" phase yet,
 but I have noticeably gotten better since I rage-quit last year against my little brother.

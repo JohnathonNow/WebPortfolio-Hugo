@@ -4,7 +4,7 @@ draft = false
 title = "Prototyping RGB LED Patterns in JavaScript"
 tags = [ "Projects" ]
 categories = [ "For Fun", "Interactable" ]
-series = [ "2607" ]
+series = [ "2607", "Interactable" ]
 +++
 
 I have been asked semi-frequently to add LED strips to various things, so I figured I'd like something that lets me play with LED strip patterns.

@@ -300,6 +300,10 @@ article p {
     color: inherit;
     margin-bottom: 1.5em;
 }
+#links {
+    width: 700px;
+    margin: 0 auto 60px
+}
 #content {
     width: 700px;
     margin: 0 auto 60px

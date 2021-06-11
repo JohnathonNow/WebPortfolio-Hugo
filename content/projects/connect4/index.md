@@ -4,7 +4,7 @@ draft = false
 title = "Connect 4 - The Power (or, here, lack thereof) Two Choices"
 tags = [ "Projects" ]
 categories = [ "For Fun", "Interactable" ]
-series = [ "AI" ]
+series = [ "AI", "Interactable" ]
 +++
 
 A year or so ago, in my lab's reading group we read the famous power of two choices in randomized load balancing paper, and it gave me an awful idea - 

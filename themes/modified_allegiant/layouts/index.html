@@ -1,12 +1,19 @@
 {{ partial "header.html" . }}
+<section id="links">
+  <article>
+    Hi! If you haven't guessed from the website title, you are on the blog of John "Jeffrey" Westhoff. <br>
+    First, here are some random links: <a href="/blorg/til/">TIL</a>, <a href="/blorg/bookmarklets">Bookmarklets</a>,
+    <a href="/series/interactable">Interactable posts</a> <br>
+    Now that that's out of the way, below you'll find my random blog posts in newest-first order - enjoy! <br>
+  </article>
+</section>
 <section id="content" role="main">
   {{ $paginator := .Paginate (where .Data.Pages ".Params.visible" "!=" false) }}
   {{ range $paginator.Pages }}
-      {{ if not ((isset .Params "visible")) }}
-          {{ .Render "li" }}
-      {{ end }}
+  {{ if not ((isset .Params "visible")) }}
+  {{ .Render "li" }}
+  {{ end }}
   {{ end }}
   {{ partial "pagination.html" .Paginator }}
 </section>
 {{ partial "footer.html" . }}
-
