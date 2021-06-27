@@ -20,10 +20,10 @@ while different expressions may be executed in different orders at each executio
 multiple times to see how it changes the resulting execution.
 
 There are a few different functions supported:  
- - (machine statements...) - Defines a node in the distributed program that runs each statement in `statements` in order
- - (put key value) - stores `value` in global memory at the location specified by `key`
- - (get key) - reads the value from global memory at the location specified by `key`
- - (wait key value) - delays progress in this node until the value in global memory at the location specified by `key` equals `value`
+ - (machine statements...) - Defines a node in the distributed program that runs each statement in `statements` in order  
+ - (put key value) - stores `value` in global memory at the location specified by `key`  
+ - (get key) - reads the value from global memory at the location specified by `key`  
+ - (wait key value) - delays progress in this node until the value in global memory at the location specified by `key` equals `value`  
 
 {{< editor >}};;;;Define a few machines
 (machine ; machine 0
