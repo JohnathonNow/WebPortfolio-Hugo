@@ -50,11 +50,15 @@ function newline(s, c) {
 gFunMap['wait'] = function(c, n) {
     var key = _eval(c, n.children[1]).eval.value;
     var val = _eval(c, n.children[2]).eval.value;
+    var back = 1;
+    if (n.children.length > 3) {
+        back = _eval(c, n.children[3]).eval.value;
+    }
     var eval = (val == (gMap[key] || new Node("undefined", "undefined", 0)).value);
     n.eval = new Node("boolean", eval, 0);
     c.loops[n.line] = (c.loops[n.line] || 0) + 1;
-    if (!eval && c.loops[n.line] < 10000) {
-        c.steps[c.machine]--;
+    if (!eval && c.loops[n.line] < 100) {
+        c.steps[c.machine] -= back;
     } else {
         newline(eval?"met criteria " + key + " = " + val : "early termination, " + key + " != " + val, c);
     }
@@ -65,12 +69,13 @@ gFunMap['put'] = function(c, n) {
     var val = _eval(c, n.children[2]).eval;
     gMap[key] = val;
     n.eval = val;
+    newline("put " + key + " = " + n.eval.value, c);
 }
 
 gFunMap['get'] = function(c, n) {
     var key = _eval(c, n.children[1]).eval.value;
     n.eval = gMap[key] || new Node("undefined", "undefined", 0);
-    newline(key + " = " + n.eval.value, c);
+    newline("get " + key + " = " + n.eval.value, c);
 }
 
 gFunMap['machine'] = function(c, n) {
