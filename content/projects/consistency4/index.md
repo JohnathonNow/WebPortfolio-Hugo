@@ -1,15 +1,15 @@
 +++
-date = "2021-06-27T02:24:00-04:00"
+date = "2021-06-28T08:38:00-04:00"
 draft = false
-title = "Sequential Consistency Sandbox"
+title = "PRAM Consistency Sandbox"
 tags = [ "Projects" ]
 categories = [ "For Fun" ]
 series = [ "Consistency", "Interactable" ]
 +++
 
-A distributed system that meets the condition "the result of any execution is the same as if the operations of all processers were executed
-in some sequential order, and the operations of each individual process appear in this sequence in the order specified by its program" is said
-to be **Sequentially consistent**.
+A weaker model than causal consistency is **PRAM Consistency**. In order for a system to be PRAM consistent,
+each process must see its own operations in program order, and operations from a single source must be seen in the order
+they were issued.
 
 <!--more-->
 
@@ -24,6 +24,8 @@ There are a few different functions supported:
  - (put key value) - stores `value` in global memory at the location specified by `key`  
  - (get key) - reads the value from global memory at the location specified by `key`  
  - (wait key value) - delays progress in this node until the value in global memory at the location specified by `key` equals `value`  
+ - (clk) - displays the vector clock for this machine  
+ - (die) - puts the machine in a failed state, where it makes no more progress  
 
 {{< editor >}};;;;Define a few machines
 (machine ; machine 0
@@ -50,10 +52,7 @@ There are a few different functions supported:
 
 -----------
 
-One way of thinking about sequential consistency is that there is a single global memory module with a multiplexor that hooks the memory module
-up to each machine, one at a time so that at any given moment only one machine can issue commands to the memory module. Additionally, which machine is connected
-to the memory module at any instant in time is completely arbitrary. Finally, each machine must only issue commands in the order that they exist within
-their local program. This is how this consistency model is implemented here.
-
-I plan on implementing this same sandbox for a few different consistency models and provide a way to switch between them on the fly. I'd also like to make the
-programming model more sane, since right now control flow and the like is non-existent.
+PRAM stands for Pipelined Random Access Memory. You can think of the implementation of PRAM consistency as each process
+has a pipeline from every other process. When a process p issues a write, it sends that write down the pipeline to everyone else.
+They will apply the writes from process p in the order they receive them from the pipe - but if there are two different
+processes writing to values, the writes from different processes can be applied in any order.

@@ -1,15 +1,15 @@
 +++
-date = "2021-06-27T02:24:00-04:00"
+date = "2021-06-28T08:52:00-04:00"
 draft = false
-title = "Sequential Consistency Sandbox"
+title = "Local Consistency Sandbox"
 tags = [ "Projects" ]
 categories = [ "For Fun" ]
 series = [ "Consistency", "Interactable" ]
 +++
 
-A distributed system that meets the condition "the result of any execution is the same as if the operations of all processers were executed
-in some sequential order, and the operations of each individual process appear in this sequence in the order specified by its program" is said
-to be **Sequentially consistent**.
+The weakest model of consistency for shared memory is **local consistency**, which requires only that a process
+observe its own operations in program order, and places no restrictions on how a process sees the operations
+performed by any other process. 
 
 <!--more-->
 
@@ -24,6 +24,8 @@ There are a few different functions supported:
  - (put key value) - stores `value` in global memory at the location specified by `key`  
  - (get key) - reads the value from global memory at the location specified by `key`  
  - (wait key value) - delays progress in this node until the value in global memory at the location specified by `key` equals `value`  
+ - (clk) - displays the vector clock for this machine  
+ - (die) - puts the machine in a failed state, where it makes no more progress  
 
 {{< editor >}};;;;Define a few machines
 (machine ; machine 0
@@ -48,12 +50,3 @@ There are a few different functions supported:
 {{< consist >}}
 
 
------------
-
-One way of thinking about sequential consistency is that there is a single global memory module with a multiplexor that hooks the memory module
-up to each machine, one at a time so that at any given moment only one machine can issue commands to the memory module. Additionally, which machine is connected
-to the memory module at any instant in time is completely arbitrary. Finally, each machine must only issue commands in the order that they exist within
-their local program. This is how this consistency model is implemented here.
-
-I plan on implementing this same sandbox for a few different consistency models and provide a way to switch between them on the fly. I'd also like to make the
-programming model more sane, since right now control flow and the like is non-existent.
