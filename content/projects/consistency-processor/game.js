@@ -31,9 +31,10 @@ function getmem(c, p, x) {
 }
 
 function write(c, x, v) {
+    var clk = c.machines[c.machine]["clk"].slice();
     for (var i = 0; i < c.machines.length; i++) {
         c.machines[i]["q"][x] = c.machines[i]["q"][x] || [];
-        c.machines[i]["q"][x].unshift({"val": v});
+        c.machines[i]["q"][x].unshift({"val": v, "clk": clk, "from": c.machine});
     }
 }
 
@@ -42,6 +43,7 @@ function putmem(c, p, k, x, v) {
     //with the write issued from k
     var val = getmem(c, p, x);
     val["val"] = v;
+    c.machines[p]["clk"][k]++;
     return val;
 }
 
@@ -54,9 +56,12 @@ function stepqueues(c, x) {
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         while (Math.random() > 0.7 && c.machines[x]["q"][key].length > 0) {
-            var write = c.machines[x]["q"][key].pop();
-            putmem(c, x, x, key, write["val"]);
-            newline("applying " + key + " = " + write["val"].value, c);
+            var write = c.machines[x]["q"][key][c.machines[x]["q"][key].length - 1];
+            if (clockcmp(c.machines[x]["clk"], write["clk"], write["from"])) {
+                c.machines[x]["q"][key].pop();
+                putmem(c, x, write["from"], key, write["val"]);
+                newline("applying " + key + " = " + write["val"].value, c);
+            }
         }
     }
 }
@@ -80,6 +85,10 @@ gDoneHooks.push(function(c) {
         gEmptyVector.push(0);
         c.done.push(false);
         c.machines.push({"m": {}, "q": {}});
+    }
+
+    for (var i = 0; i < gStuff.length; i++) {
+        c.machines[i]["clk"] = gEmptyVector.slice();
     }
 
     while (!c.done.every((x) => x)) {
@@ -141,7 +150,6 @@ gFunMap['die'] = function(c, n) {
     newline("failed", c);
     c.done[c.machine] = true;
 }
-
 
 gFunMap['machine'] = function(c, n) {
     var statements = n.children;

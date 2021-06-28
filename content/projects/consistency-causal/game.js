@@ -147,13 +147,13 @@ gFunMap['put'] = function(c, n) {
     var wrt = putmem(c, c.machine, c.machine, key, val);
     c.machines[c.machine]["out"].push(write(c.machine, key, val, c.machines[c.machine]["clk"].slice()));
     n.eval = val;
-    newline("put " + key + " = " + n.eval.value, c);
+    newline("<u>put</u> " + key + " = " + n.eval.value, c);
 }
 
 gFunMap['get'] = function(c, n) {
     var key = _eval(c, n.children[1]).eval.value;
     n.eval = getmem(c, c.machine, key)["val"];
-    newline("get " + key + " = " + n.eval.value, c);
+    newline("<u>get</u> " + key + " = " + n.eval.value, c);
 }
 
 gFunMap['clk'] = function(c, n) {

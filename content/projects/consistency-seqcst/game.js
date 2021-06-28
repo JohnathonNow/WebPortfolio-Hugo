@@ -69,13 +69,13 @@ gFunMap['put'] = function(c, n) {
     var val = _eval(c, n.children[2]).eval;
     gMap[key] = val;
     n.eval = val;
-    newline("put " + key + " = " + n.eval.value, c);
+    newline("<u>put</u> " + key + " = " + n.eval.value, c);
 }
 
 gFunMap['get'] = function(c, n) {
     var key = _eval(c, n.children[1]).eval.value;
     n.eval = gMap[key] || new Node("undefined", "undefined", 0);
-    newline("get " + key + " = " + n.eval.value, c);
+    newline("<u>get</u> " + key + " = " + n.eval.value, c);
 }
 
 gFunMap['machine'] = function(c, n) {
