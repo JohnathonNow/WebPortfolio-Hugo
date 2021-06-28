@@ -9,12 +9,11 @@ series = [ "Consistency", "Interactable" ]
 
 In a sequentially consistent distributed system, all processes observe all write operations in some common order.
 A **causally consistent** system has a slightly weaker guarantee - only causally related writes must be observed in a common order,
-and processes can disagree on the order of causally unrelated events. Causation here is the "happened before" relation. There are two sources of 
+and processes can disagree on the order of causally unrelated events. <!--more-->
+Causation here is the "happened before" relation. There are two sources of 
 "happened before" in this memory model, and "happened before" is transitive:
 1. Program order - within a process, each operation a process performs happens before operations that come later in the program the process is running  
 2. Reading other's writes - when a process reads a value from another process's write, that write happened before the read  
-
-<!--more-->
 
   
 </br></br>
