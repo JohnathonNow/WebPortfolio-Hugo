@@ -1,7 +1,7 @@
 +++
 date = "2021-06-28T17:34:00-04:00"
 draft = false
-title = "One thing consists of consistence"
+title = "One thing consists of consistency"
 tags = [ "Projects" ]
 categories = [ "For Fun" ]
 series = [ "Consistency", "Interactable" ]
