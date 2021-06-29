@@ -51,7 +51,7 @@ There are a few different functions supported:
 
 -----------
 
-Processor consistency is stronger than both PRAM consistency and cache consistency, but weaker than causal consistency. It is implemented here as
+Processor consistency is stronger than both PRAM consistency and cache consistency, but weaker than sequential consistency. It is implemented here as
 a set of global atomic queues for each shared object, where each write puts a tuple of a vector clock and the written value into the corresponding object's
 queue (giving cache consistency). Each write is applied by each process only when that write is at the front of its queue _and_ it is the next operation
 from the process that issued it that the process has yet to apply (giving PRAM consistency). Checking if an operation is the next from a given process is easy - 

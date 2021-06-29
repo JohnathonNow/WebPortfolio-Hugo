@@ -54,6 +54,3 @@ One way of thinking about sequential consistency is that there is a single globa
 up to each machine, one at a time so that at any given moment only one machine can issue commands to the memory module. Additionally, which machine is connected
 to the memory module at any instant in time is completely arbitrary. Finally, each machine must only issue commands in the order that they exist within
 their local program. This is how this consistency model is implemented here.
-
-I plan on implementing this same sandbox for a few different consistency models and provide a way to switch between them on the fly. I'd also like to make the
-programming model more sane, since right now control flow and the like is non-existent.

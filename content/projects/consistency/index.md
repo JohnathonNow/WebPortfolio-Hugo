@@ -80,6 +80,6 @@ There are a few different functions supported:
 
 This page is kind of the aggregate page for playing with different consistency models. If you
 click the Consistency link below you can get to more detailed explanations for each individual consistency model. As a quick summary, local consistency is the weakest model while
-linearizability (not presented here) is the strongest possible. Sequential consistency is stronger than causal consistency, which is stronger than processor consistency. Processor consistency
+linearizability (not presented here) is the strongest possible. Sequential consistency is stronger than causal consistency and processor consistency, which aren't comparable with each other. Processor consistency
 is the combination of PRAM consistency and cache consistency, which are incomparable with
-each other but both stronger than local consistency.
+each other but both stronger than local consistency. Causal consistency is stronger than PRAM consistency and incomparable with cache consistency.
