@@ -451,11 +451,13 @@ function causal(c) {
         }
         while (Math.random() > 0.5 && c.machines[x]["in"].length > 0) {
             for (var i = 0; i < c.machines[x]["in"].length; i++) {
-                var write = c.machines[x]["in"][i];
-                if (clockcmp(c.machines[x]["clk"], write["clk"], write["from"])) {
-                    c.machines[x]["in"].splice(i, 1);
-                    putmem(c, x, write["from"], write["index"], write["val"]);
-                    newline("applying " + write["index"] + " = " + write["val"].value, c);
+                if (Math.random() > 0.5) {
+                    var write = c.machines[x]["in"][i];
+                    if (clockcmp(c.machines[x]["clk"], write["clk"], write["from"])) {
+                        c.machines[x]["in"].splice(i, 1);
+                        putmem(c, x, write["from"], write["index"], write["val"]);
+                        newline("applying " + write["index"] + " = " + write["val"].value, c);
+                    }
                 }
             }
         }
