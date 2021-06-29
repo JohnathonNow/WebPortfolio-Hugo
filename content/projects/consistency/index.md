@@ -35,7 +35,11 @@ The other three machines will wait until they see that "lock" has a value of 1, 
 In the PRAM, Processor, Causal, and Sequential consistency models, the other 3 machines will all see the value "good" when they read "data",
 because they all see the order of the write operations from machine number 0 in the same order. In the Local and Cache consistency models,
 however, they can see "bad", "good", or even undefined for the value of "data", since they don't necessarily see the writes from machine
-number 0 in the order machine 0 actually did them.
+number 0 in the order machine 0 actually did them.  
+Note that a different program might work differently with different models. [Here](https://johnwesthoff.com/projects/consistency/?pb=60da9c2a5b81f60d073e37c2)
+is a program that works under Cache, Processor, Causal, and Sequential consistency but not Local or PRAM consistency - if you run it several times with
+either of those consistency models you will see that machine 3 occasionally reads a value other than 3 for "step" which doesn't make sense, but
+that doesn't break the rules of those models.
 
 The order of the which machine gets to make progress and when is randomized every time you press the run button,
 so you might want to press the button multiple times to see how the results cange. You can also play
@@ -76,6 +80,6 @@ There are a few different functions supported:
 
 This page is kind of the aggregate page for playing with different consistency models. If you
 click the Consistency link below you can get to more detailed explanations for each individual consistency model. As a quick summary, local consistency is the weakest model while
-linearizability (not presented here) is the strongest. Sequential consistency is stronger than causal consistency, which is stronger than processor consistency. Processor consistency
+linearizability (not presented here) is the strongest possible. Sequential consistency is stronger than causal consistency, which is stronger than processor consistency. Processor consistency
 is the combination of PRAM consistency and cache consistency, which are incomparable with
 each other but both stronger than local consistency.
