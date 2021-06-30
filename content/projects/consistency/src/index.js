@@ -6,6 +6,8 @@
 #include "./processor.js"
 #include "./causal.js"
 #include "./seqcst.js"
+#include "./linear.js"
+
 
 var editor = ace.edit("editor");
 var gStuff = [];
@@ -19,7 +21,8 @@ var gModels = {
     "cache": cache,
     "processor": processor,
     "causal": causal,
-    "seqcst": seqcst
+    "seqcst": seqcst,
+    "linear": linearizable
 };
 
 editor.setTheme("ace/theme/chrome");

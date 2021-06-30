@@ -50,7 +50,7 @@ There are a few different functions supported:
 
 -----------
 
-One way of thinking about sequential consistency is that there is a single global memory module with a multiplexor that hooks the memory module
-up to each machine, one at a time so that at any given moment only one machine can issue commands to the memory module. Additionally, which machine is connected
-to the memory module at any instant in time is completely arbitrary. Finally, each machine must only issue commands in the order that they exist within
-their local program. This is how this consistency model is implemented here.
+Unlike with causal consistency, which only requires that every process see the same order
+of causally related writes, sequential consistency requires that every process
+observe the same order of _all_ writes. Note, however, that stale reads are still possible,
+as sequential consistency does not impose the real time constraint. 

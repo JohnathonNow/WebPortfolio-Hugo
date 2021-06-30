@@ -30,7 +30,7 @@ function causal(c) {
 
     function stepqueues(c, x) {
         while (Math.random() > 0.5 && c.machines[x]["out"].length > 0) {
-            var write = c.machines[x]["out"].pop();
+            var write = c.machines[x]["out"].shift();
             newline("sending " + write["index"], c);
             for (var i = 0; i < c.machines.length; i++) {
                 if (i != x) {
