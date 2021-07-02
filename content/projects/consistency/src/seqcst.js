@@ -1,4 +1,4 @@
-import newline from "common.js";
+import newline from "./common.js";
 import { ConsistencyModel } from "./consistency.js";
 export class SequentialConsistency extends ConsistencyModel {
 
@@ -39,14 +39,14 @@ export class SequentialConsistency extends ConsistencyModel {
     step(c, x) {
         stepqueues(c, x);
         if (c.steps[x] < gStuff[x].length) {
-            _eval(c, gStuff[x][c.steps[x]]);
+            this.eval(c, gStuff[x][c.steps[x]]);
         }
         stepqueues(c, x);
     }
 
     put(c, n) {
-        var key = _eval(c, n.children[1]).eval.value;
-        var val = _eval(c, n.children[2]).eval;
+        var key = this.eval(c, n.children[1]).eval.value;
+        var val = this.eval(c, n.children[2]).eval;
         this.putmem(c, c.machine, c.machine, key, val);
         c.machines[c.machine]["out"].push(write(c.machine, key, val, c.machines[c.machine]["clk"].slice()));
         n.eval = val;

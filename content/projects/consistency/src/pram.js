@@ -59,8 +59,6 @@ function pram(c) {
         newline("<u>put</u> " + key + " = " + n.eval.value, c);
     }
 
-    #include "get.js"
-    #include "wait.js"
 
     c.machines = [];
     c.steps = [];

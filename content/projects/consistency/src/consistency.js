@@ -1,5 +1,9 @@
-import newline from "common.js";
+import newline from "./common.js";
 export class ConsistencyModel {
+    constructor(_eval) {
+        this.eval = _eval;
+    }
+    
     getmem(context, process, object) {
         //
     }
@@ -9,8 +13,9 @@ export class ConsistencyModel {
     }
 
     get(context, ast_node) {
-        var key = _eval(context, ast_node.children[1]).eval.value;
+        var key = this.eval(context, ast_node.children[1]).eval.value;
         var result_node = this.getmem(context, context.machine, key)["val"];
+        this.eval(c, result_node);
         newline("<u>get</u> " + key + " = " + result_node.eval.value, c);
         return result_node;
     }

@@ -1,19 +1,12 @@
 //VERSION 2
 
-#include "./local.js"
-#include "./cache.js"
-#include "./pram.js"
-#include "./processor.js"
-#include "./causal.js"
-#include "./seqcst.js"
-#include "./linear.js"
-
+import SequentialConsistency from "./seqcst.js";
+import newline from "./common.js";
 
 var editor = ace.edit("editor");
 var gStuff = [];
 var gMap = {};
 var gEmptyVector = [];
-var gUndefined = new Node("undefined", "undefined", 0);
 var gSteps = 0;
 var gModels = {
     "local": local,
@@ -45,10 +38,6 @@ gDoneHooks.push(function(c) {
     var model = $('#consistency').val();
     gModels[model](c);
 });
-
-function newline(s, c) {
-    $('#telem').html($('#telem').html() + '<b>' + c.machine + '</b>: ' + s + '<br>');
-}
 
 gResetHooks.push(function () {
     gStuff = []; gMap = {};
