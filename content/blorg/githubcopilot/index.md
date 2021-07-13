@@ -9,7 +9,7 @@ tags = [ "Plagiarism", "GitHub Copilot" ]
 [GitHub Copilot](https://copilot.github.com/) is a very cool idea, and at the very least will be very fun to play around with.
 But there're definitely some things to be concerned about.
 
-<!-- more -->
+<!--more-->
 
 Copilot generates code suggestions for you, as an "ai pair programmer". The problem with having
 an AI generate code for you, however, is you don't know or trust them. This leads to both
