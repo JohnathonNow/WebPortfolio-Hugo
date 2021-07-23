@@ -91,6 +91,6 @@ just OK I guess. Can I say that? Like, is that some kind of trademark thing?
 
 In that case, that is purely coincidental! The name honestly and truly was
 inspired by the fact that the set of spaces on an infinitely large chess board
-has the cardinality <h1>ℵ</h1><sub>0</sub>, aka aleph-null or aleph-zero. Also, the domain
+has the cardinality <var>ℵ</var><sub>0</sub>, aka aleph-null or aleph-zero. Also, the domain
 name alephzerochess.com wasn't taken!
 
