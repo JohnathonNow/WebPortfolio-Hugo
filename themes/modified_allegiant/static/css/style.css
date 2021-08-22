@@ -303,7 +303,7 @@ article p {
     width: 700px;
     margin: 0 auto 60px
 }
-#content {
+#content, #links {
     width: 700px;
     margin: 0 auto 60px
 }
@@ -811,11 +811,13 @@ tr td:hover {
         font-size: 1.2em;
     }
     #branding,
-    #content {
+    #content,
+    #links {
         padding: 0 5%;
         box-sizing: border-box;
     }
-    #content {
+    #content,
+    #links {
         width: 100%;
     }
     .header {
