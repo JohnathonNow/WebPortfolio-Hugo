@@ -37,7 +37,8 @@ can we gamble in our MMO with confidence that everything is fair?
 
 Well, rather than just go and read about all the solutions that
 I'm sure exist, I thought it would be fun to think through this
-problem.
+problem. Big disclaimer, I have absolutely no idea what I'm talking
+about here, so don't like, treat any of this as accurate or "good".
 
 # Decks of Cards
 
@@ -103,3 +104,19 @@ this for certain, though. Another downside is that the game only has two outcome
 whereas real gambling games have like, several. Roulette, for example, has
 38 different outcomes. That's not a power of two last time I checked, so we cannot
 simply repeat this game 5 or 6 times and have it map nicely. 
+
+# An Apprach That Probably Doesn't Work
+
+Well, ok, what if instead of sending prime or composite, we always send a composite. This composite will
+be semi-prime, that is, the product of two primes. These primes will be randomly chosen. Let X be the
+larger of the two primes. What we bet on now is what the value of X mod 7 is. Because X is prime, this
+will never be 0 (because then X is divisible by 7 and therefore not prime), and will always take
+on values between 1 and 6. Hey, that's like, the values from a die! And, as far as I know,
+all values are equally likely to show up. Neat.
+
+But wait, the example I just gave is Roulette, which has 38 possible numbers. So like, can we take
+X modulo 39? Well, no, because 39 is not prime. No prime, for example, is congruent to 36 modulo 39:
+that would mean the prime is equal to 39x + 36, which is the same as 3(13x + 12), meaning it would
+be divisible by 3 and therefore not prime. So how can we do a Roulette wheel with this silly idea?
+
+
