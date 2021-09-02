@@ -116,7 +116,7 @@ all values are equally likely to show up. Neat.
 
 But wait, the example I just gave is Roulette, which has 38 possible numbers. So like, can we take
 X modulo 39? Well, no, because 39 is not prime. No prime, for example, is congruent to 36 modulo 39:
-that would mean the prime is equal to 39x + 36, which is the same as 3(13x + 12), meaning it would
+that would mean the prime is equal to 39x + 36 for some integer x >= 0, which we can express as 3(13x + 12), meaning it would
 be divisible by 3 and therefore not prime. So how can we do a Roulette wheel with this silly idea?
 
 Well, to give Y different possibilites, we just need to find a prime X that equals kY+1 for some integer k >= 1.
@@ -130,6 +130,9 @@ That will now give us one of 38 different results, all roughly equally likely. W
 then ask our player what they are betting on. Once they answer, we can reveal the factorization
 of our semiprime, which the player can use to verify our honesty.
 
+A quick sidenote, before posting this I was made aware of [Chebyshev's bias](https://en.wikipedia.org/wiki/Chebyshev%27s_bias),
+which does imply that this approach is flawed, as it is slightly unfair. Oh well.
+
 # Why All This?
 
 A method like the one I described has the benefit that the house really cannot play
@@ -138,3 +141,6 @@ the player for input, such as "what will this land on?", it's actually in the ho
 best interest to _actually_ choose random numbers, as otherwise the house's strategy
 could be exploitable.
 
+I feel the input part of this is crucial. I mentioned earlier that a dishonest
+house could just purposely choose random seeds or decks that favor them beyond
+the accepted house odds. 
