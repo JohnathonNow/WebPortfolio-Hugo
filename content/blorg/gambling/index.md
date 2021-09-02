@@ -119,4 +119,22 @@ X modulo 39? Well, no, because 39 is not prime. No prime, for example, is congru
 that would mean the prime is equal to 39x + 36, which is the same as 3(13x + 12), meaning it would
 be divisible by 3 and therefore not prime. So how can we do a Roulette wheel with this silly idea?
 
+Well, to give Y different possibilites, we just need to find a prime X that equals kY+1 for some integer k >= 1.
+Then, after we find our dice roll modulo X, we divide it by k (rounding down) to put it back into Y buckets. Easy!
+
+So, to have 38 different possible rolls, we need a prime that equals 38k+1. It turns out k=5 gives us 191,
+which is prime. Yay! So to generate a Roulette spin, we generate two random primes and multiply them together.
+The larger of the two primes, we'll call it X, we take and figure out X mod 191. There will be 190 possible
+results here, all roughly equally likely. We take X mod 191, and we divide it by 5, flooring that result.
+That will now give us one of 38 different results, all roughly equally likely. We can share our semiprime, and
+then ask our player what they are betting on. Once they answer, we can reveal the factorization
+of our semiprime, which the player can use to verify our honesty.
+
+# Why All This?
+
+A method like the one I described has the benefit that the house really cannot play
+dishonestly. I mean, they _could_ cheat by picking the results, but by asking
+the player for input, such as "what will this land on?", it's actually in the house's
+best interest to _actually_ choose random numbers, as otherwise the house's strategy
+could be exploitable.
 
