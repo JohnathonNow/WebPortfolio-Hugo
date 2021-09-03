@@ -1,6 +1,6 @@
 +++
 date = "2021-08-31T16:03:30-04:00"
-draft = true
+draft = false
 title = "Thoughts on Online Gambling"
 heading = "Blog"
 tags = [ "RuneScape" ]
