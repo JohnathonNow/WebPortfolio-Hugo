@@ -74,6 +74,15 @@ Teleconferencing applications, on the other hand, will be routed through the low
 applications as new streams are formed. For example, if someone is watching YouTube while another person is joining a Zoom call,
 the network may change the YouTube route to allow the Zoom call to have a lower latency connection.
 
+Pleeeease look at this graph:
+
+![JUNCCBIN deployment example](JUNCCBIN.png)
+
+In this picture, there are a number of households (the rectangles in the gray area) that
+each have a CRN. Connections between CRNs are shown in green. Some CRNs have Internet Links.
+These are shown in red for low speed DSL connections, and blue for high speed fiber 
+connections. These CRNs use these connections to proxy all of their traffic to the CO.
+
 Implementation
 ==============
 
