@@ -23,7 +23,7 @@ normal people chess, but the game board extends infinitely in all directions.
 The version I can find the most references to is the one proposed by Jianying Ji,
 which is played with the standard pieces and rules on an infinitely large board,
 but with the following 3 changes:
-1. Knights are replaced by [nightriders](https://en.wikipedia.org/wiki/Nightrider_(chess)), which move like a knight but can extend their move as many times as they wish.  
+1. Knights are replaced by [nightriders](https://en.wikipedia.org/wiki/Nightrider_(chess\)), which move like a knight but can extend their move as many times as they wish.  
 2. Pawns can only promote after passing all enemy pieces.  
 3. Every piece must be within a set distance to a piece belonging to their opponent.  
 
@@ -47,10 +47,11 @@ within an 8x8 board that a regular knight cannot, which I don't want to do.
 So I have a few ideas on how to resolve this.
 
 First, how does a knight move? Well, like any child who has played chess can tell
-you, knights move like the letter L. That doesn't seem immediately helpful to me.
+you, knights move like the letter L 
+(Edit from December 7, 2021: And World Champion Magnus Carlsen as well). That doesn't seem immediately helpful to me.
 The FIDE definition is that knights move to the nearest square that is not on the
 same rank, file, or diagonal as the knight. That is to say, the nearest square
-that a rook (rank + file) or bishop (diagonal) can move to. This is also
+that a rook (rank + file) or bishop (diagonal) cannot move to. This is also
 equivalent to saying a knight moves to the nearest squares a queen cannot, by the way.
 Additionally, the shape a knight moves is the same as "have a rook move two squares,
 and then move one square orthogonally". I guess that _is_ moving as an L. Yet another
