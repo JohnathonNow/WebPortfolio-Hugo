@@ -1,0 +1,49 @@
+<script src="https://johnwesthoff.com/js/jquery.min.js"> </script>
+<link href="jsonTree.css" rel="stylesheet" />
+<script src="jsonTree.js"></script>
+<head>
+    <style type="text/css" media="screen"> #editor { top: 0; right: 0; bottom: 0; left: 0; margin:0 auto;} </style>
+</head>
+<div id="editor{{ .Get 0 }}">{{ if len .Inner | ne 0 }}{{ .Inner }}{{ else }}(+ 1 1){{ end }} </div>
+<script src="https://johnwesthoff.com/js/ace/src-min-noconflict/ace.js"></script>
+<script>
+    var editor = ace.edit("editor{{ .Get 0 }}");
+    editor.setTheme("ace/theme/chrome");
+    editor.setAutoScrollEditorIntoView(true);
+    editor.setOption("maxLines", 30);
+    editor.getSession().setMode("ace/mode/json");
+
+    var code = new URL(window.location).searchParams.get("code");
+    if (code) {
+            editor.setValue(code, new Number('0'));
+        } else {
+                var b64 = new URL(window.location).searchParams.get("b64");
+                if (b64) {
+                        editor.setValue(atob(b64), new Number('0'));
+                    } else {
+                            var pb = new URL(window.location).searchParams.get("pb");
+                            if (pb) {
+                                    console.log("going for it");
+                                    $.get("https://www.johnwesthoff.com/api/pb/", {'id': pb}, function(result, status){
+                                            console.log(result);
+                                            console.log(status);
+                                            parse(result);
+                                            editor.setValue(result, new Number('0'));
+                                        });
+                                }
+                        }
+            }
+    function parse(dataStr) {
+            var wrapper = document.getElementById("wrapper");
+            wrapper.innerHTML = "";
+            try {
+                var data = JSON.parse(dataStr);
+            } catch (e) {}
+            var tree = jsonTree.create(data, wrapper);
+            tree.expand();
+        }
+</script>
+<div id="tb{{ .Get 0 }}"></div>
+<div id="wrapper"></div>
+<button id="but" onclick="var e = parse(ace.edit('editor{{ .Get 0 }}').getValue()); $('#tb{{ .Get 0 }}').html('Result: <code>'+stringify(e)+'</code>');">Display</button>
+<button id="butshr" onclick="var t = ace.edit('editor{{ .Get 0 }}').getValue(); $.post('https://www.johnwesthoff.com/api/pb/', {'raw': t}, function(result, status){ history.pushState({}, document.title, window.location.href.split('?')[0] + '?pb=' + encodeURIComponent(result));  });" > Share</button>
