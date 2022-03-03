@@ -57,5 +57,5 @@ WasmBoard::place_piece(&mut self, piece_type: String, rank: String, file: String
 
 WasmBoard basically just handles the serialization and deserialization for BigInts and punts the method calls off to the underlying Board instance, and then once
 in the rust code we are free to pass around references and return complex data types and eat hot chip and lie. We just need to make sure our interface callable
-from JS is acceptable to the mighty wasm. And we can get around needing to return references by returning indices into whatever data structure is holing out data.
+from JS is acceptable to the mighty wasm. And we can get around needing to return references by returning indices into whatever data structure is holding our data.
 So now my chess game has a single move validator written in rust that runs on both the backend and in the client, which I think is pretty cool.
