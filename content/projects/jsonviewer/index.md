@@ -8,6 +8,8 @@ series = [ "Goofing Off" ]
 +++
 Free json viewer built using [this library I found](https://github.com/summerstyle/jsonTreeViewer).
 
+<!--more-->
+
 {{< jsonviewer >}}
 [1, 2, 3]
 {{< /jsonviewer >}}
