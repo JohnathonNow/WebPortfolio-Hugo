@@ -99,7 +99,6 @@ small,
 span,
 strike,
 strong,
-sub,
 summary,
 sup,
 table,
@@ -300,8 +299,12 @@ article p {
     color: inherit;
     margin-bottom: 1.5em;
 }
-#content {
+#links {
     width: 700px;
+    margin: 0 auto 60px
+}
+#content, #links {
+    width: max(720px, 70%);
     margin: 0 auto 60px
 }
 footer {
@@ -808,11 +811,13 @@ tr td:hover {
         font-size: 1.2em;
     }
     #branding,
-    #content {
+    #content,
+    #links {
         padding: 0 5%;
         box-sizing: border-box;
     }
-    #content {
+    #content,
+    #links {
         width: 100%;
     }
     .header {
@@ -848,4 +853,7 @@ tr td:hover {
     article p {
         font-size: .95em;
     }
+}
+li > ol { 
+    padding-left: 2em;
 }

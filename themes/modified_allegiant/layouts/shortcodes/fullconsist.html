@@ -1,0 +1,27 @@
+<script src="https://johnwesthoff.com/js/jquery.min.js"> </script>
+<head>
+    <style type="text/css" media="screen">
+#game_div {
+    width:80%;
+    height:auto;
+    margin:0 auto;
+}</style>
+</head>
+
+<select id="consistency">
+<option value="local">Local</option>
+<option value="cache">Cache</option>
+<option value="pram">PRAM</option>
+<option value="processor">Processor</option>
+<option value="causal">Causal</option>
+<option value="seqcst">Sequential</option>
+<option value="linear">Linearizable</option>
+
+
+</select>
+
+<script> $("#but").remove(); //remove any previous button </script>
+<script src="game.js"></script>
+<button id="but" onclick="start();">Start Script</button>
+<div id="telem"></div>
+</body>

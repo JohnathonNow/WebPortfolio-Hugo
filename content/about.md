@@ -31,6 +31,11 @@ of wood<sup>2</sup>.
 
 In October 2020, I married my wifey [breezy](http://bashfulbytes.com/). 
 
+In the summer of 2021, I moved across the country from 
+Hadley, Massachusetts to Redding, California.
+At the same time, I took a leave of absence from my studies at NYU, and
+became a software engineer at Optum.
+
 <sup>1</sup>Considering Notre Dame would lose to Michigan 14-45 the following year and then proceed to not play Michgian for 14 years, *oof*.  
 <sup>2</sup>I did eventually succeed in making a wooden cup - it leaks slowly, but looks *great*!
 
