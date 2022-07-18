@@ -30,7 +30,7 @@ he can teleport to a bank. Because that makes sense.
 My desktop computer is now a briefcase. This is because I moved across the country
 and took it on an airplane. 
 
-![pog.jpg](A picture of a deskbecause top computer built into a briefcase.)
+![A picture of a deskbecause top computer built into a briefcase.](pog.jpg)
 
 It could use some work, namely, I'd love some ventilation for it so I can
 use it while it is closed. But for now it works well.
@@ -56,7 +56,7 @@ switches and miss them from the Kailh Browns I was using). I also bought Box Pin
 if I wanted to play around I could. It has steel plates, which add some nice heft and look great with the RGB lights and the
 cheap pudding keycaps I put on.
 
-![board.jpg](A picture of a split keyboard with a rainbow of glowing keys.)
+![A picture of a split keyboard with a rainbow of glowing keys.](board.jpg)
 
 Right now everything is its default. I will definitely be changing things, but I am not settled on a layout.
 I enjoy using the encoders with my thumbs. It is just very satisfying. Everything feels satisfying, really.
