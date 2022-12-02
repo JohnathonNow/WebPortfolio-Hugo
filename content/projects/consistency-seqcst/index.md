@@ -52,7 +52,8 @@ There are a few different functions supported:
 
 Unlike with causal consistency, which only requires that every process see the same order
 of causally related writes, sequential consistency requires that every process
-observe the same order of _all_ writes. Note, however, that stale reads are still possible,
+observe the same order of _all_ writes. Note, however, that stale reads (with respect to real time)
+are still possible,
 as sequential consistency does not impose the real time constraint. 
 
 Note that the simulator here is currently slightly stronger, and in fact provides linearizability. I am in the middle of
