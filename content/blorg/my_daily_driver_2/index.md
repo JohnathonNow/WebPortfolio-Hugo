@@ -58,8 +58,15 @@ Cons:
 - Low powered 6th gen m-series intel CPU  
 - Poor battery life despite the above  
 - USB C port is reportedly finecky  
+- No full HDMI port  
 - Trackpad was good for the era but bad by modern standards  
 - The camera placement is so bad removing it would have probably been better  
+- Keyboard backlight at half-power has some awful PWM flicker  
+
+One weird thing though is the fanless design. It is deeply unsettling. I've never
+used a computer that was just... silent... before. I keep expecting it to ramp up
+while typing this, or when building in godot, or ever at all. I'm sure I'll get
+used to it, but for now it's just completely jarring.
 
 That said, I'm pretty happy with it. The performance actually doesn't suck nearly
 as much as one might expect a 4.5W, dual-core, 8-year-old CPU to. As a quick
@@ -70,6 +77,7 @@ I paid about $60 for it, and figure it'll last me a few years as my "take with m
 all the time and use for quick ideas" machine. And at a power requirement
 in the single digits of watts, when it retires it'll make a good low-power
 server addition.
+
 
 
 \* I use a 16" M1 Max MacBook Pro every day for work, and am pretty used to its
