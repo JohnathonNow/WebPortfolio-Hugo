@@ -39,12 +39,18 @@ on Godot 4, you can't export to web with C#. Properties in-editor frequently bug
 just make things not work. Dealing with all of these quirks, as a new-comer, is very overwhelming. I liked the part
 where the day of the deadline our player scene got corrupted by magic. That was fun.
 
+
 The Rewrite
 -----------
 
 Because of the aforementioned problems, we did the obvious thing and re-wrote Spydentity Crisis in gdscript. This was
 very relaxing but also super tedious, since the game was something like 3000 lines of C#. I also made it a point to keep 
 the game working during the re-write, which meant dealing with the C# <---> GDscript interoptability.
+
+Lessons Learned
+---------------
+
+GDscript is our friend. C# is the enemy. Godot is pretty neat, but also frustrating. I should learn how to write shaders.
 
 [Play on Itch.io](https://johnbot.itch.io/spydentity-crisis)
 
@@ -77,6 +83,16 @@ paid for assets, but we plan on replacing those with our own. I mean, does it re
 with 4K textures?
 
 ![Two beans holding guitars face each other. A rhythm game is playing, with various notes moving towards a shooting-game style reticule. The last note was early, and the player is low on health.](screen.png)
+
+Lessons Learned
+---------------
+
+Godot multiplayer is surprisingly easy to get working. I now feel as though I can throw together the stupidest games imaginable in a weekend and force
+everyone I know to play them with me, which is kind of a superpower. I learned no lessons about biting off more than I can chew, or anything of the sort.
+Anyway, definitely should aim to be finished 2 days before the jam ends instead of 1 day before, a lesson I also "learned" in grad school. I should
+learn how to write shaders.
+
+[Play on Itch.io](https://johnbot.itch.io/battle-royale-of-the-bands)
 
 Conclusion
 ==========
