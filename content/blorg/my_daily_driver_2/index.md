@@ -60,6 +60,8 @@ Cons:
 - USB C port is reportedly finecky  
 - No full HDMI port  
 - Trackpad was good for the era but bad by modern standards  
+- No trackpoint, a necessity on a machine of this size
+- Buttons below the trackpad instead of above
 - The camera placement is so bad removing it would have probably been better  
 - Keyboard backlight at half-power has some awful PWM flicker  
 
