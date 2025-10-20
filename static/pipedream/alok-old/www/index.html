@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>A-LOK Angle Reader Test</title>
+    <meta name='viewport' content='width=device-width'>
+    <script type='text/javascript' charset='utf-8' src='cordova.js'></script>
+    <script type='text/javascript' charset='utf-8' src='js/johnbotlib.js'></script>
+    <script type='text/javascript' charset='utf-8' src='js/index.js'></script>
+</head>
+<body onload='onLoad()'>
+    <h1>A-LOK Compass Test</h1>
+    <div id=startpage class=page>
+        <h2>Setup</h2>
+        This is the setting up page thing.<br class="clearFloat">
+        <div onclick='jump("mainpage")' class='button'>Next</div>
+    </div>
+    <div id=mainpage class=page>
+        <h2>Heading: <span id=heading> &deg;</h2>
+        Measurements:<br class="clearFloat">
+        <div id=measurements class='measurements'>
+            <table style="width:100%">
+                <thead>
+                  <tr>
+                    <th width=60em>Point</th>
+                    <th width=60em class=middlecolumn>Angle</th> 
+                    <th>Item</th>
+                  </tr>
+                </thead>
+                <tbody id=meaurementtablebody></tbody>
+            </table>
+        </div>
+        <div class='full'>
+            <canvas id="compass" height="160" width="160">Compass</canvas>
+            <div onclick='compassClear()' class='buttoninlineleft'>Reset</div>
+            <div onclick='compassMeasure()' class='buttoninlineright'>Record</div>
+        </div>
+        <div>
+            <div class='leftline'>Item: </div>
+            <div class='rightline'><input type="text" name="item" id=item class=item height=20em></input></div>
+        </div>
+        <br class="clearFloat">
+        <div onclick='jump("startpage")' class='button'>Back</div>
+        <!-- <div id=test onclick='writeTest()' class='button'>Test</div> -->
+    </div>
+</body>
+</html>

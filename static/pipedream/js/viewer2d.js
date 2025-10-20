@@ -9,6 +9,9 @@
 function generate2DDiagram() {
     const canvas2d = document.getElementById('canvas-2d');
     const ctx = canvas2d.getContext('2d');
+
+    canvas2d.width = canvas2d.clientWidth;
+    canvas2d.height = canvas2d.clientHeight;
     const width = canvas2d.width;
     const height = canvas2d.height;
     const center = { x: width / 2, y: height / 2 };
@@ -20,13 +23,15 @@ function generate2DDiagram() {
     const outerDiameter = innerDiameter + 2 * wallThickness;
 
     const maxDiameter = outerDiameter;
-    const scale = (Math.min(width, height) * 0.8) / maxDiameter;
+    const scale = ((Math.min(width, height) * 0.8) / maxDiameter);
 
     // Draw manhole walls
     ctx.beginPath();
     ctx.arc(center.x, center.y, (outerDiameter / 2) * scale, 0, 2 * Math.PI);
     ctx.fillStyle = '#c0c0c0';
     ctx.fill();
+    ctx.strokeStyle = '#000000';
+    ctx.stroke();
 
     ctx.beginPath();
     ctx.globalCompositeOperation = 'destination-out';
@@ -34,7 +39,7 @@ function generate2DDiagram() {
     ctx.fillStyle = '#ffffff';
     ctx.fill();
     ctx.globalCompositeOperation = 'source-over';
-
+    ctx.stroke();
     // Draw holes
     const holeEntries = document.querySelectorAll('#holes-container .hole-entry');
     let cumulativeAngle = 0;
@@ -67,9 +72,51 @@ function generate2DDiagram() {
         ctx.clearRect(-holeRadius, 0, holeRadius * 2, innerDiameter * 2 * scale);
         ctx.restore();
 
+        ctx.beginPath();
+        ctx.strokeStyle = '#000';
+        let cornerX1 = center.x + innerDiameter * scale / 2 * Math.cos(-angleRad - centralAngle / 2 + Math.PI / 2);
+        let cornerY1 = center.y + innerDiameter * scale / 2 * Math.sin(-angleRad - centralAngle / 2 + Math.PI / 2);
+        let cornerX2 = wallThickness * scale * Math.cos(-cumulativeAngle * Math.PI/180 + Math.PI / 2) + cornerX1;
+        let cornerY2 = wallThickness * scale * Math.sin(-cumulativeAngle * Math.PI/180 + Math.PI / 2) + cornerY1;
+        ctx.moveTo(cornerX1, cornerY1);
+        // ctx.moveTo(0, 0);
+        ctx.lineTo(cornerX2, cornerY2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.strokeStyle = '#000';
+        cornerX1 = center.x + innerDiameter * scale / 2 * Math.cos(-angleRad + centralAngle / 2 + Math.PI / 2);
+        cornerY1 = center.y + innerDiameter * scale / 2 * Math.sin(-angleRad + centralAngle / 2 + Math.PI / 2);
+        cornerX2 = wallThickness * scale * Math.cos(-cumulativeAngle * Math.PI/180 + Math.PI / 2) + cornerX1;
+        cornerY2 = wallThickness * scale * Math.sin(-cumulativeAngle * Math.PI/180 + Math.PI / 2) + cornerY1;
+        ctx.moveTo(cornerX1, cornerY1);
+        // ctx.moveTo(0, 0);
+        ctx.lineTo(cornerX2, cornerY2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = '#33de42';
+        ctx.arc(center.x, center.y, (innerDiameter / 2) * scale, -angleRad - centralAngle / 2 + Math.PI / 2, -angleRad + centralAngle / 2  + Math.PI / 2);
+        ctx.stroke();
+    });
+    cumulativeAngle = 0;
+    holeEntries.forEach((hole, index) => {
+        const holeDiameter = parseFloat(hole.querySelector('.hole-diameter').value);
+        const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
+
+        cumulativeAngle += angleOffset;
+        const angleRad = (cumulativeAngle * Math.PI) / 180;
+
+        const holeRadius = (holeDiameter / 2) * scale;
+        const manholeRadius = (innerDiameter / 2) * scale;
+        // Calculate hole center position
+        let cy = center.y - holeRadius;
+        const holeCenterX = center.x * Math.cos(angleRad) - cy * Math.sin(angleRad);
+        const holeCenterY = cy * Math.cos(angleRad) + center.x * Math.sin(angleRad);
+        const centralAngle = 2*Math.asin(holeDiameter / (2*innerRadius));
+        const arcLength = innerRadius * centralAngle;
         // Draw label
         ctx.fillStyle = "black";
-        const labelRadius = manholeRadius + 15;
+        const labelRadius = manholeRadius + 50;
         const labelX = center.x + Math.cos(-angleRad + Math.PI / 2) * labelRadius;
         const labelY = center.y + Math.sin(-angleRad + Math.PI / 2) * labelRadius;
         ctx.fillText(`Hole ${index + 1}: Arc=${arcLength.toFixed(2)}"`, labelX, labelY);
@@ -81,7 +128,7 @@ function generate2DDiagram() {
             const prevAngleRad = (prevCumulativeAngle * Math.PI) / 180;
             const midAngleRad = (prevAngleRad + angleRad) / 2;
             const arcDistance = innerRadius * (angleRad - prevAngleRad - centralAngle / 2 - prevCentralAngle / 2);
-            const distLabelRadius = manholeRadius - 15;
+            const distLabelRadius = manholeRadius - 30;
             const distLabelX = center.x + Math.cos(-midAngleRad + Math.PI / 2) * distLabelRadius;
             const distLabelY = center.y + Math.sin(-midAngleRad + Math.PI / 2) * distLabelRadius;
             ctx.fillText(`Holes ${index}-${index + 1}: Dist=${arcDistance.toFixed(2)}"`, distLabelX, distLabelY);
