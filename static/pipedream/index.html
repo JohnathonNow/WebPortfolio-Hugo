@@ -5,6 +5,9 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+    <script src="/js/vendored/three.js"></script>
+    <script src="/js/vendored/OrbitControls.js"></script>
+    <script src="/js/vendored/ThreeCSG.js"></script>
     <h1>PipeDream</h1>
 
     <div id="controls">
@@ -19,11 +22,20 @@
         <input type="number" id="manhole-height" value="72" step="6" min="6">
 
         <h2>Holes</h2>
-        <div id="holes-container">
-            <!-- Hole input fields will be added here -->
-        </div>
-        <button id="add-hole">Add Hole</button>
-        <br>
+        <table id="holes-table">
+            <thead>
+                <tr>
+                    <th>Diameter (in)</th>
+                    <th>Angle Offset (°)</th>
+                    <th>Vertical Offset (in)</th>
+                    <th>Pipe Type</th>
+                    <th><button class="add-hole" id="add-hole">+</button></th>
+                </tr>
+            </thead>
+            <tbody id="holes-container">
+                <!-- Hole input rows will be added here -->
+            </tbody>
+        </table>
         <button id="generate-btn">Generate</button>
     </div>
 
@@ -40,9 +52,6 @@
             <canvas id="canvas-3d" width="600" height="400"></canvas>
         </div>
     </div>
-    <script src="js/vendored/three.js"></script>
-    <script src="js/vendored/OrbitControls.js"></script>
-    <script src="js/vendored/ThreeCSG.js"></script>
     <script src="js/viewer2d.js"></script>
     <script src="js/viewer3d.js"></script>
     <script src="js/ui.js"></script>

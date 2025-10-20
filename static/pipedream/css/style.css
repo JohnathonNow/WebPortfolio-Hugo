@@ -22,11 +22,13 @@ h4 {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 20px;
     float: left;
-    width: 350px;
+    width: 40vw;
 }
 
 #viewer {
-    margin-left: 390px;
+    width: 50vw;
+    height: auto;
+    float: right;
 }
 
 /* Form Elements */
@@ -57,38 +59,40 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Hole Entry Styles */
-#holes-container {
+/* Hole Table Styles */
+#holes-table {
+    width: 100%;
+    border-collapse: collapse;
     margin-top: 15px;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
 }
 
-.hole-entry {
+#holes-table th,
+#holes-table td {
     border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    background-color: #fafafa;
+    padding: 8px;
+    text-align: left;
 }
 
-.hole-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+#holes-table th {
+    background-color: #f2f2f2;
+}
+
+#holes-table input,
+#holes-table select {
+    width: 90%;
     padding: 5px;
-    background-color: #f0f0f0;
+    box-sizing: border-box;
 }
 
-.hole-body {
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    display: block;
+.add-hole {
+    background-color: #35dc45;
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-top: 0;
 }
 
-.hole-entry.collapsed .hole-body {
-    display: none;
+.add-hole:hover {
+    background-color: #23c833;
 }
 
 .remove-hole {
@@ -100,6 +104,10 @@ button:hover {
 
 .remove-hole:hover {
     background-color: #c82333;
+}
+
+.hide {
+    display: none;
 }
 
 /* Tab Navigation */
@@ -117,6 +125,7 @@ button:hover {
     margin-right: 5px;
     border-radius: 5px 5px 0 0;
     color: #333;
+    margin-left: auto;
 }
 
 .tab-link.active {
@@ -140,8 +149,9 @@ div.tab-content.active {
 /* Canvas Styles */
 #canvas-3d,
 #canvas-2d {
-    width: auto;
-    height: 80vh;
+    width: 90%;
+    height: auto;
     display: block;
     border: 1px solid #ddd;
+    margin: auto;
 }

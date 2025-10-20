@@ -36,7 +36,7 @@ function generate2DDiagram() {
     ctx.globalCompositeOperation = 'source-over';
 
     // Draw holes
-    const holeEntries = document.querySelectorAll('.hole-entry');
+    const holeEntries = document.querySelectorAll('#holes-container .hole-entry');
     let cumulativeAngle = 0;
     ctx.font = "10px Arial";
     ctx.fillStyle = "black";

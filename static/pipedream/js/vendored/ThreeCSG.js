@@ -1,5 +1,5 @@
 'use strict';
-window.ThreeBSP = (function() {
+var ThreeBSP = (function() {
 
     var ThreeBSP,
         EPSILON = 1e-5,
@@ -699,3 +699,5 @@ window.ThreeBSP = (function() {
     return ThreeBSP;
 
 })();
+if(typeof(window) !== 'undefined') window.ThreeBSP = ThreeBSP;
+else if(typeof(self) !== 'undefined') self.ThreeBSP = ThreeBSP;
