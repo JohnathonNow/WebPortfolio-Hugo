@@ -60,7 +60,7 @@ function init(payload) {
     camera.position.set(3, 1, -1);
     scene.add(camera);
 
-    var ambientLight = new THREE.AmbientLight(0x404040);
+    var ambientLight = new THREE.AmbientLight(0x909090);
     scene.add(ambientLight);
 
     var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
