@@ -137,6 +137,10 @@ function generate3DView(params) {
     const manholeInnerGeometry = new THREE.CylinderGeometry(innerRadius, innerRadius, manholeHeight, 128);
     manholeInnerGeometry.translate(0, wallThickness, 0);
     manholeResultBSG = manholeResultBSG.subtract(new window.ThreeBSP(manholeInnerGeometry));
+
+    const manholeJoinGeometry = new THREE.CylinderGeometry(innerRadius + wallThickness / 2, innerRadius + wallThickness / 2, manholeHeight, 128);
+    manholeJoinGeometry.translate(0, manholeHeight - wallThickness, 0);
+    manholeResultBSG = manholeResultBSG.subtract(new window.ThreeBSP(manholeJoinGeometry));
     let cumulativeAngle = 0;
     holes.forEach((hole) => {
         const { holeDiameter, angleOffset, verticalOffset } = hole;

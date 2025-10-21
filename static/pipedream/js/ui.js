@@ -3,16 +3,27 @@
  * @param {Function} generate3DView - Callback function to generate the 3D view.
  * @param {Function} generate2DDiagram - Callback function to generate the 2D diagram.
  */
+
+const thicknessTable = {
+    "48": 5,
+    "60": 6,
+    "72": 7,
+    "84": 8,
+    "96": 9,
+    "120": 10,
+    "144": 12
+};
+
 function initUI(generate3DView, generate2DDiagram) {
     const addHoleBtn = document.getElementById('add-hole');
     const holesContainer = document.getElementById('holes-container'); // This is now the tbody
     const generateBtn = document.getElementById('generate-btn');
-
+    const wallThickness = document.getElementById('wall-thickness');
     let holeCount = 0;
 
     // Add initial holes
     addHole();
-    addHole();
+    addHole(12, 180);
 
     addHoleBtn.addEventListener('click', () => addHole());
 
@@ -28,7 +39,7 @@ function initUI(generate3DView, generate2DDiagram) {
         holeRow.classList.add('hole-entry'); // Keep class for consistency in selectors
         holeRow.innerHTML = `
             <td><input type="number" class="hole-diameter" value="${diameter || 12}" step="3" min="0"></td>
-            <td><input type="number" class="hole-angle" value="${angle || (90 * holeCount)}" step="5"></td>
+            <td><input type="number" class="hole-angle" value="${angle || 90}" step="5"></td>
             <td><input type="number" class="hole-vertical" value="${inset || 100}" min="0" step="0.1"></td>
             <td>
                 <select class="pipe-type">
@@ -68,7 +79,10 @@ function initUI(generate3DView, generate2DDiagram) {
         generate2DDiagram(payload);
         setTimeout(() => generate3DView(payload));
     }
-
+    document.querySelector("#inner-diameter").addEventListener("change", (e) => {
+        let value = e.target.value;
+        if (thicknessTable[value]) wallThickness.value = thicknessTable[value];
+    });
     generateBtn.addEventListener('click', generate);
     generate();
 }
