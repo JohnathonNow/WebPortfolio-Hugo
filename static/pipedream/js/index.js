@@ -6,6 +6,4 @@ document.addEventListener('DOMContentLoaded', () => {
     init3D();
 
     // Initial generation
-    setTimeout(generate2DDiagram);
-    setTimeout(generate3DView);
 });

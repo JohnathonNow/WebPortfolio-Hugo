@@ -29,12 +29,13 @@ function initUI(generate3DView, generate2DDiagram) {
         holeRow.innerHTML = `
             <td><input type="number" class="hole-diameter" value="${diameter || 12}" step="3" min="0"></td>
             <td><input type="number" class="hole-angle" value="${angle || (90 * holeCount)}" step="5"></td>
-            <td><input type="number" class="hole-vertical" value="${inset || 12}" min="1"></td>
+            <td><input type="number" class="hole-vertical" value="${inset || 100}" min="0" step="0.1"></td>
             <td>
                 <select class="pipe-type">
-                    <option>PVC</option>
-                    <option>RCP</option>
-                    <option>HDPE</option>
+                    <option data-thickness="2">PVC [2"]</option>
+                    <option data-thickness="4">RCP [4"]</option>
+                    <option data-thickness="2">SW-HDPE [2"]</option>
+                    <option data-thickness="3">DW-HDPE [3"]</option>
                 </select>
             </td>
             <td><button class="remove-hole">X</button></td>
@@ -61,10 +62,39 @@ function initUI(generate3DView, generate2DDiagram) {
             document.getElementById(tabId).classList.add('active');
         });
     });
-
-    generateBtn.addEventListener('click', () => {
+    function generate() {
+        let payload = generateData();
         // Generate 2D diagram first to avoid being blocked by 3D errors.
-        generate2DDiagram();
-        setTimeout(generate3DView);
+        generate2DDiagram(payload);
+        setTimeout(() => generate3DView(payload));
+    }
+
+    generateBtn.addEventListener('click', generate);
+    generate();
+}
+
+function generateData() {
+    const innerDiameter = parseFloat(document.getElementById('inner-diameter').value);
+    const wallThickness = parseFloat(document.getElementById('wall-thickness').value);
+    const manholeHeight = parseFloat(document.getElementById('manhole-height').value);
+
+    const holes = [];
+    const holeEntries = document.querySelectorAll('#holes-container .hole-entry');
+    holeEntries.forEach((hole) => {
+        const materialField = hole.querySelector('.pipe-type');
+        const materialIndex = materialField.selectedIndex;
+        const materialName = materialField.value;
+        const materialThickness = materialField.options[materialIndex].getAttribute("data-thickness");
+        const holeDiameter = parseFloat(hole.querySelector('.hole-diameter').value) + 2*materialThickness;
+        const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
+        const verticalOffset = parseFloat(hole.querySelector('.hole-vertical').value);
+        holes.push({ holeDiameter, angleOffset, verticalOffset, materialName });
     });
+
+    return {
+        innerDiameter,
+        wallThickness,
+        manholeHeight,
+        holes
+    };
 }

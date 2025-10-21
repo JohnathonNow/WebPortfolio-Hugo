@@ -60,27 +60,9 @@ function init3D() {
  * Generates and displays the 3D view of the manhole.
  * @memberof viewer3d
  */
-function generate3DView() {
-    const innerDiameter = parseFloat(document.getElementById('inner-diameter').value);
-    const wallThickness = parseFloat(document.getElementById('wall-thickness').value);
-    const manholeHeight = parseFloat(document.getElementById('manhole-height').value);
-
-    const holes = [];
-    const holeEntries = document.querySelectorAll('#holes-container .hole-entry');
-    holeEntries.forEach((hole) => {
-        const holeDiameter = parseFloat(hole.querySelector('.hole-diameter').value);
-        const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
-        const verticalOffset = parseFloat(hole.querySelector('.hole-vertical').value);
-        holes.push({ holeDiameter, angleOffset, verticalOffset });
-    });
-
+function generate3DView(data) {
     worker.postMessage({
         type: 'render',
-        payload: {
-            innerDiameter,
-            wallThickness,
-            manholeHeight,
-            holes
-        }
+        payload: data
     });
 }

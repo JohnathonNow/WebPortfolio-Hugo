@@ -6,7 +6,7 @@
  * Generates and displays the 2D overhead diagram of the manhole.
  * @memberof viewer2d
  */
-function generate2DDiagram() {
+function generate2DDiagram(data) {
     const canvas2d = document.getElementById('canvas-2d');
     const ctx = canvas2d.getContext('2d');
 
@@ -18,13 +18,11 @@ function generate2DDiagram() {
 
     ctx.clearRect(0, 0, width, height);
 
-    const innerDiameter = parseFloat(document.getElementById('inner-diameter').value);
-    const wallThickness = parseFloat(document.getElementById('wall-thickness').value);
+    const { innerDiameter, wallThickness, manholeHeight, holes } = data;
     const outerDiameter = innerDiameter + 2 * wallThickness;
-
     const maxDiameter = outerDiameter;
     const scale = ((Math.min(width, height) * 0.8) / maxDiameter);
-
+    console.log(data);
     // Draw manhole walls
     ctx.beginPath();
     ctx.arc(center.x, center.y, (outerDiameter / 2) * scale, 0, 2 * Math.PI);
@@ -41,17 +39,14 @@ function generate2DDiagram() {
     ctx.globalCompositeOperation = 'source-over';
     ctx.stroke();
     // Draw holes
-    const holeEntries = document.querySelectorAll('#holes-container .hole-entry');
     let cumulativeAngle = 0;
     ctx.font = "10px Arial";
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
     const innerRadius = (innerDiameter / 2);
     var prevCentralAngle = 0;
-    holeEntries.forEach((hole, index) => {
-        const holeDiameter = parseFloat(hole.querySelector('.hole-diameter').value);
-        const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
-
+    holes.forEach((hole, index) => {
+        const { holeDiameter, angleOffset, verticalOffset } = hole;
         cumulativeAngle += angleOffset;
         const angleRad = (cumulativeAngle * Math.PI) / 180;
 
@@ -99,9 +94,9 @@ function generate2DDiagram() {
         ctx.stroke();
     });
     cumulativeAngle = 0;
-    holeEntries.forEach((hole, index) => {
-        const holeDiameter = parseFloat(hole.querySelector('.hole-diameter').value);
-        const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
+    holes.forEach((hole, index) => {
+        const { holeDiameter, angleOffset, verticalOffset } = hole;
+
 
         cumulativeAngle += angleOffset;
         const angleRad = (cumulativeAngle * Math.PI) / 180;
@@ -124,10 +119,17 @@ function generate2DDiagram() {
 
         // find arc distance between adjacent holes
         if (index > 0) {
-            const prevCumulativeAngle = cumulativeAngle - angleOffset;
-            const prevAngleRad = (prevCumulativeAngle * Math.PI) / 180;
-            const midAngleRad = (prevAngleRad + angleRad) / 2;
-            const arcDistance = innerRadius * (angleRad - prevAngleRad - centralAngle / 2 - prevCentralAngle / 2);
+            const angleDiff = angleOffset * Math.PI / 180;
+            let midAngleRad = angleRad - angleDiff / 2;
+            const arcDistance1 = innerRadius * (angleDiff - centralAngle / 2 - prevCentralAngle / 2);
+            const arcDistance2 = innerRadius * (2*Math.PI - angleDiff - centralAngle / 2 - prevCentralAngle / 2);
+            let arcDistance;
+            if (arcDistance1 < arcDistance2 || arcDistance2 < 0) {
+                arcDistance = arcDistance1;
+            } else {
+                arcDistance = arcDistance2;
+                midAngleRad += Math.PI;
+            }
             const distLabelRadius = manholeRadius - 30;
             const distLabelX = center.x + Math.cos(-midAngleRad + Math.PI / 2) * distLabelRadius;
             const distLabelY = center.y + Math.sin(-midAngleRad + Math.PI / 2) * distLabelRadius;

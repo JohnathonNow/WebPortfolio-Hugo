@@ -114,19 +114,30 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-function generateSphereData(innerDiameter, wallThickness, manholeHeight, holes) {
+function generate3DView(params) {
+    const { innerDiameter, wallThickness, manholeHeight, holes } = params;
+    let bottomHole = 1 / 0;
+    let bottomDiameter = 0;
+    holes.forEach((hole) => {if (hole.verticalOffset < bottomHole) {
+        bottomHole = hole.verticalOffset;
+        bottomDiameter = hole.holeDiameter;
+    }});
+    console.log(bottomHole);
+
     const outerRadius = innerDiameter / 2 + wallThickness;
     const innerRadius = innerDiameter / 2;
     const manholeGeometry = new THREE.CylinderGeometry(outerRadius, outerRadius, manholeHeight, 128);
 
     let manholeResultBSG = new window.ThreeBSP(manholeGeometry);
-
+    
+    while (scene.children.length > 3) { // Keep lights
+        scene.remove(scene.children[3]);
+    }
+    
     const manholeInnerGeometry = new THREE.CylinderGeometry(innerRadius, innerRadius, manholeHeight, 128);
     manholeInnerGeometry.translate(0, wallThickness, 0);
     manholeResultBSG = manholeResultBSG.subtract(new window.ThreeBSP(manholeInnerGeometry));
-
     let cumulativeAngle = 0;
-
     holes.forEach((hole) => {
         const { holeDiameter, angleOffset, verticalOffset } = hole;
         cumulativeAngle += angleOffset;
@@ -144,29 +155,21 @@ function generateSphereData(innerDiameter, wallThickness, manholeHeight, holes) 
         holeMesh.rotation.y = angleRad;
         holeMesh.position.x = holeCenterX;
         holeMesh.position.z = holeCenterY;
-        holeMesh.position.y = verticalOffset - manholeHeight / 2;
+        holeMesh.position.y = - manholeHeight / 2 + holeDiameter / 2 + (verticalOffset - bottomHole + 0.6) * 12;
 
         holeMesh.updateMatrix();
 
         const holeBSG = new window.ThreeBSP(holeMesh);
         manholeResultBSG = manholeResultBSG.subtract(holeBSG);
+        console.log(100);
     });
 
-    return manholeResultBSG.toMesh();
-}
-
-
-function generate3DView(params) {
-    const { innerDiameter, wallThickness, manholeHeight, holes } = params;
-
-    const finalMesh = generateSphereData(innerDiameter, wallThickness, manholeHeight, holes);
+    const finalMesh = manholeResultBSG.toMesh();
     finalMesh.material = manholeMaterial;
 
-    while (scene.children.length > 3) { // Keep lights
-        scene.remove(scene.children[3]);
-    }
     addGridHelper();
     scene.add(finalMesh);
+
     const boundingBox = new THREE.Box3().setFromObject(finalMesh);
     const center = boundingBox.getCenter(new THREE.Vector3());
     const size = boundingBox.getSize(new THREE.Vector3());
