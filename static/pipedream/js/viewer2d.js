@@ -129,7 +129,8 @@ function generate2DDiagram(data) {
         ctx.fillText(`ID: ${holeInnerDiameter}"`, labelX, labelY + lineHeight*2);
         ctx.fillText(`Type: ${materialName}`, labelX, labelY + lineHeight*3);
         ctx.fillText(`Grout: 2"`, labelX, labelY + lineHeight*4);
-        ctx.fillText(`Invert: ${verticalOffset.toFixed(2)}'`, labelX, labelY + lineHeight*5);
+        ctx.fillText(`OD: ${holeDiameter}"`, labelX, labelY + lineHeight*5);
+        ctx.fillText(`Invert: ${verticalOffset.toFixed(2)}'`, labelX, labelY + lineHeight*6);
         ctx.textAlign = "center";
         // find arc distance between adjacent holes
         // if (index > 0) {

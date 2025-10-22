@@ -10,7 +10,15 @@ importScripts(
 );
 
 var camera, scene, renderer, controls, mockCanvas;
-const manholeMaterial = new THREE.MeshLambertMaterial({ color: 0xbbbbbb });
+var manholeMaterial = new THREE.MeshLambertMaterial({ color: 0xbbbbbb });
+
+var loader = new THREE.ImageBitmapLoader().setPath( "/static/" );
+loader.setOptions( { imageOrientation: 'flipY' } );
+loader.load( 'texture.png', function ( imageBitmap ) {
+manholeMaterial = new THREE.MeshStandardMaterial( { color: 0xbbbbbb, map: new THREE.CanvasTexture( imageBitmap ) });
+});
+
+// const texture = new THREE.TextureLoader().load( "static/texture.png" );
 
 self.onmessage = function(e) {
     const { type, payload } = e.data;
@@ -144,7 +152,7 @@ function generate3DView(params) {
     let cumulativeAngle = 0;
     holes.forEach((hole) => {
         const { holeDiameter, angleOffset, verticalOffset } = hole;
-        cumulativeAngle += angleOffset;
+        cumulativeAngle -= angleOffset;
         const angleRad = (cumulativeAngle * Math.PI) / 180;
 
         const holeRadius = holeDiameter / 2;
