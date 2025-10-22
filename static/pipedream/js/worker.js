@@ -12,7 +12,7 @@ importScripts(
 var camera, scene, renderer, controls, mockCanvas;
 var manholeMaterial = null;// = new THREE.MeshLambertMaterial({ color: 0xbbbbbb });
 
-var loader = new THREE.ImageBitmapLoader().setPath( "./static/" );
+var loader = new THREE.ImageBitmapLoader().setPath( "../static/" );
 loader.setOptions( { imageOrientation: 'flipY' } );
 loader.load( 'texture.png', function ( imageBitmap ) {
 manholeMaterial = new THREE.MeshStandardMaterial( { color: 0xbbbbbb, map: new THREE.CanvasTexture( imageBitmap ) });
