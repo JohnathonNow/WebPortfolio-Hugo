@@ -22,10 +22,10 @@ function initUI(generate3DView, generate2DDiagram) {
     let holeCount = 0;
 
     // Add initial holes
-    addHole();
+    addHole(12, 0);
     addHole(12, 180);
 
-    addHoleBtn.addEventListener('click', () => addHole());
+    addHoleBtn.addEventListener('click', () => addHole(12, 90));
 
     /**
      * Adds a new hole row to the table.
@@ -39,7 +39,7 @@ function initUI(generate3DView, generate2DDiagram) {
         holeRow.classList.add('hole-entry'); // Keep class for consistency in selectors
         holeRow.innerHTML = `
             <td><input type="number" class="hole-diameter" value="${diameter || 12}" step="3" min="0"></td>
-            <td><input type="number" class="hole-angle" value="${angle || 90}" step="5"></td>
+            <td><input type="number" class="hole-angle" value="${angle}" step="5"></td>
             <td><input type="number" class="hole-vertical" value="${inset || 100}" min="0" step="0.1"></td>
             <td>
                 <select class="pipe-type">
@@ -99,10 +99,11 @@ function generateData() {
         const materialIndex = materialField.selectedIndex;
         const materialName = materialField.value;
         const materialThickness = materialField.options[materialIndex].getAttribute("data-thickness");
-        const holeDiameter = parseFloat(hole.querySelector('.hole-diameter').value) + 2*materialThickness;
+        const holeInnerDiameter = parseFloat(hole.querySelector('.hole-diameter').value);
+        const holeDiameter = holeInnerDiameter + 2*materialThickness + 4;
         const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
         const verticalOffset = parseFloat(hole.querySelector('.hole-vertical').value);
-        holes.push({ holeDiameter, angleOffset, verticalOffset, materialName });
+        holes.push({ holeDiameter, holeInnerDiameter, angleOffset, verticalOffset, materialName });
     });
 
     return {

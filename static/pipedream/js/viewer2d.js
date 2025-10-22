@@ -8,6 +8,7 @@
  */
 function generate2DDiagram(data) {
     const canvas2d = document.getElementById('canvas-2d');
+    canvas2d.height = canvas2d.width;
     const ctx = canvas2d.getContext('2d');
 
     canvas2d.width = canvas2d.clientWidth;
@@ -47,7 +48,7 @@ function generate2DDiagram(data) {
     var prevCentralAngle = 0;
     holes.forEach((hole, index) => {
         const { holeDiameter, angleOffset, verticalOffset } = hole;
-        cumulativeAngle += angleOffset;
+        cumulativeAngle -= angleOffset;
         const angleRad = (cumulativeAngle * Math.PI) / 180;
 
         const holeRadius = (holeDiameter / 2) * scale;
@@ -93,12 +94,16 @@ function generate2DDiagram(data) {
         ctx.arc(center.x, center.y, (innerDiameter / 2) * scale, -angleRad - centralAngle / 2 + Math.PI / 2, -angleRad + centralAngle / 2  + Math.PI / 2);
         ctx.stroke();
     });
+    let totalCumulativeAngle = 0;
+    holes.forEach((hole, index) => {
+        if (index > 0) totalCumulativeAngle += hole.angleOffset;
+    });
     cumulativeAngle = 0;
     holes.forEach((hole, index) => {
-        const { holeDiameter, angleOffset, verticalOffset } = hole;
+        const { holeDiameter, holeInnerDiameter, materialName, angleOffset, verticalOffset } = hole;
 
 
-        cumulativeAngle += angleOffset;
+        cumulativeAngle -= angleOffset;
         const angleRad = (cumulativeAngle * Math.PI) / 180;
 
         const holeRadius = (holeDiameter / 2) * scale;
@@ -107,34 +112,53 @@ function generate2DDiagram(data) {
         let cy = center.y - holeRadius;
         const holeCenterX = center.x * Math.cos(angleRad) - cy * Math.sin(angleRad);
         const holeCenterY = cy * Math.cos(angleRad) + center.x * Math.sin(angleRad);
-        const centralAngle = 2*Math.asin(holeDiameter / (2*innerRadius));
+        var centralAngle = 2*Math.asin(holeDiameter / (2*innerRadius));
         const arcLength = innerRadius * centralAngle;
         // Draw label
         ctx.fillStyle = "black";
+        ctx.textAlign = "left"
         const labelRadius = manholeRadius + 50;
-        const labelX = center.x + Math.cos(-angleRad + Math.PI / 2) * labelRadius;
-        const labelY = center.y + Math.sin(-angleRad + Math.PI / 2) * labelRadius;
-        ctx.fillText(`Hole ${index + 1}: Arc=${arcLength.toFixed(2)}"`, labelX, labelY);
-        
-
+        const labelX = center.x + Math.cos(-angleRad + Math.PI / 2) * labelRadius - 32;
+        const labelY = center.y + Math.sin(-angleRad + Math.PI / 2) * labelRadius - 32;
+        const lineHeight = 12;
+        const font = ctx.font;
+        ctx.font = "bold 16px serif";
+        ctx.fillText(`Hole ${index + 1}`, labelX, labelY);
+        ctx.font = font;
+        ctx.fillText(`Arc=${arcLength.toFixed(2)}"`, labelX, labelY + lineHeight*1);
+        ctx.fillText(`ID: ${holeInnerDiameter}"`, labelX, labelY + lineHeight*2);
+        ctx.fillText(`Type: ${materialName}`, labelX, labelY + lineHeight*3);
+        ctx.fillText(`Grout: 2"`, labelX, labelY + lineHeight*4);
+        ctx.fillText(`Invert: ${verticalOffset.toFixed(2)}'`, labelX, labelY + lineHeight*5);
+        ctx.textAlign = "center";
         // find arc distance between adjacent holes
-        if (index > 0) {
-            const angleDiff = angleOffset * Math.PI / 180;
-            let midAngleRad = angleRad - angleDiff / 2;
+        // if (index > 0) {
+            var angleDiff = angleOffset * Math.PI / 180;
+            if (index == 0) {
+                let lastHole = holes[holes.length - 1];
+                angleDiff = Math.PI * (360 - totalCumulativeAngle) / 180;
+                prevCentralAngle = 2*Math.asin(lastHole.holeDiameter / (2*innerRadius));
+                //centralAngle = -centralAngle;
+            }
+            let midAngleRad = angleRad + angleDiff / 2;
             const arcDistance1 = innerRadius * (angleDiff - centralAngle / 2 - prevCentralAngle / 2);
             const arcDistance2 = innerRadius * (2*Math.PI - angleDiff - centralAngle / 2 - prevCentralAngle / 2);
             let arcDistance;
-            if (arcDistance1 < arcDistance2 || arcDistance2 < 0) {
-                arcDistance = arcDistance1;
-            } else {
+            if (arcDistance1 > arcDistance2 || arcDistance1 < 0) {
                 arcDistance = arcDistance2;
                 midAngleRad += Math.PI;
+            } else {
+                arcDistance = arcDistance1;
             }
             const distLabelRadius = manholeRadius - 30;
             const distLabelX = center.x + Math.cos(-midAngleRad + Math.PI / 2) * distLabelRadius;
             const distLabelY = center.y + Math.sin(-midAngleRad + Math.PI / 2) * distLabelRadius;
-            ctx.fillText(`Holes ${index}-${index + 1}: Dist=${arcDistance.toFixed(2)}"`, distLabelX, distLabelY);
-        }
+            if (index > 0) {
+                ctx.fillText(`Holes ${index}-${index + 1}: Dist=${arcDistance.toFixed(2)}"`, distLabelX, distLabelY);
+            } else {
+                ctx.fillText(`Holes ${holes.length}-1: Dist=${arcDistance.toFixed(2)}"`, distLabelX, distLabelY);
+            }
+        // }
         ctx.fillStyle = '#ffffff';
         prevCentralAngle = centralAngle;
     });
