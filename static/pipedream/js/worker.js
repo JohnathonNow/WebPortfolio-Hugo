@@ -10,7 +10,7 @@ importScripts(
 );
 
 var camera, scene, renderer, controls, mockCanvas;
-var manholeMaterial = new THREE.MeshLambertMaterial({ color: 0xbbbbbb });
+var manholeMaterial = null;// = new THREE.MeshLambertMaterial({ color: 0xbbbbbb });
 
 var loader = new THREE.ImageBitmapLoader().setPath( "/static/" );
 loader.setOptions( { imageOrientation: 'flipY' } );
@@ -176,30 +176,41 @@ function generate3DView(params) {
         console.log(100);
     });
 
-    const finalMesh = manholeResultBSG.toMesh();
-    finalMesh.material = manholeMaterial;
+    function finish() {
+        const finalMesh = manholeResultBSG.toMesh();
+        finalMesh.material = manholeMaterial;
 
-    addGridHelper();
-    scene.add(finalMesh);
+        addGridHelper();
+        scene.add(finalMesh);
 
-    const boundingBox = new THREE.Box3().setFromObject(finalMesh);
-    const center = boundingBox.getCenter(new THREE.Vector3());
-    const size = boundingBox.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const fov = camera.fov * (Math.PI / 180);
-    const cameraDistance = (maxDim / 2) / Math.tan(fov / 2);
+        const boundingBox = new THREE.Box3().setFromObject(finalMesh);
+        const center = boundingBox.getCenter(new THREE.Vector3());
+        const size = boundingBox.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const fov = camera.fov * (Math.PI / 180);
+        const cameraDistance = (maxDim / 2) / Math.tan(fov / 2);
 
-    camera.position.x = center.x;
-    camera.position.y = center.y;
-    camera.position.z = center.z + cameraDistance * 1.5;
+        camera.position.x = center.x;
+        camera.position.y = center.y;
+        camera.position.z = center.z + cameraDistance * 1.5;
 
-    const minZ = boundingBox.min.z;
-    const cameraToFarEdge = (minZ < 0) ? -minZ + camera.position.z : camera.position.z - minZ;
-    camera.far = cameraToFarEdge * 3;
-    camera.updateProjectionMatrix();
+        const minZ = boundingBox.min.z;
+        const cameraToFarEdge = (minZ < 0) ? -minZ + camera.position.z : camera.position.z - minZ;
+        camera.far = cameraToFarEdge * 3;
+        camera.updateProjectionMatrix();
 
-    controls.target.copy(center);
-    controls.update();
+        controls.target.copy(center);
+        controls.update();
+    }
+
+    if (manholeMaterial) {
+        finish();
+    } else {
+        loader.load( 'texture.png', function ( imageBitmap ) {
+            manholeMaterial = new THREE.MeshStandardMaterial( { color: 0xbbbbbb, map: new THREE.CanvasTexture( imageBitmap ) });
+            finish();
+        });
+    }
 }
 
 function updateCamera(payload) {
