@@ -14,7 +14,7 @@ const thicknessTable = {
     "144": 12
 };
 
-function initUI(generate3DView, generate2DDiagram) {
+function initUI(generate3DView, generate2DDiagram, generateReport) {
     const addHoleBtn = document.getElementById('add-hole');
     const holesContainer = document.getElementById('holes-container'); // This is now the tbody
     const generateBtn = document.getElementById('generate-btn');
@@ -22,10 +22,10 @@ function initUI(generate3DView, generate2DDiagram) {
     let holeCount = 0;
 
     // Add initial holes
-    addHole(12, 0);
+    addHole(12, 90);
     addHole(12, 180);
 
-    addHoleBtn.addEventListener('click', () => addHole(12, 90));
+    addHoleBtn.addEventListener('click', () => addHole(12, holeCount * 90));
 
     /**
      * Adds a new hole row to the table.
@@ -77,6 +77,7 @@ function initUI(generate3DView, generate2DDiagram) {
         let payload = generateData();
         // Generate 2D diagram first to avoid being blocked by 3D errors.
         generate2DDiagram(payload);
+        generateReport(payload);
         setTimeout(() => generate3DView(payload));
     }
     document.querySelector("#inner-diameter").addEventListener("change", (e) => {
@@ -103,7 +104,8 @@ function generateData() {
         const holeDiameter = holeInnerDiameter + 2*materialThickness + 4;
         const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
         const verticalOffset = parseFloat(hole.querySelector('.hole-vertical').value);
-        holes.push({ holeDiameter, holeInnerDiameter, angleOffset, verticalOffset, materialName });
+        const annularSpace = 2;
+        holes.push({ holeDiameter, holeInnerDiameter, angleOffset, verticalOffset, materialName, annularSpace });
     });
 
     return {

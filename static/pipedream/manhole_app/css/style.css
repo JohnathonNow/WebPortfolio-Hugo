@@ -1,0 +1,167 @@
+/* General Body and Typography */
+body {
+    font-family: sans-serif;
+    margin: 2em;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1, h2, h3, h4 {
+    color: #333;
+}
+
+h4 {
+    margin-top: 0;
+}
+
+/* Main Layout */
+#controls {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    float: left;
+    width: 40vw;
+}
+
+#viewer {
+    width: 50vw;
+    height: auto;
+    float: right;
+}
+
+/* Form Elements */
+label {
+    display: inline-block;
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+input[type="number"] {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Hole Table Styles */
+#holes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#holes-table th,
+#holes-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#holes-table th {
+    background-color: #f2f2f2;
+}
+
+#holes-table input,
+#holes-table select {
+    width: 90%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.add-hole {
+    background-color: #35dc45;
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-top: 0;
+}
+
+.add-hole:hover {
+    background-color: #23c833;
+}
+
+.remove-hole {
+    background-color: #dc3545;
+    font-size: 12px;
+    padding: 5px 10px;
+    margin-top: 0;
+}
+
+.remove-hole:hover {
+    background-color: #c82333;
+}
+
+.hide {
+    display: none;
+}
+
+/* Tab Navigation */
+.tab-bar {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.tab-link {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0;
+    color: #333;
+    margin-left: auto;
+}
+
+.tab-link.active {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+
+div.tab-content.active {
+    display: block;
+}
+
+/* Canvas Styles */
+#canvas-3d,
+#canvas-2d {
+    width: 90%;
+    height: auto;
+    display: block;
+    border: 1px solid #ddd;
+    margin: auto;
+}
+
+#canvas-report {
+    width: 300px;
+    height: 300px;
+    float: left;
+    display: inline;
+    border: 1px solid #ddd;
+    /* margin: auto; */
+}
+

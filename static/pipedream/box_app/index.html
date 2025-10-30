@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PipeDream</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <script src="js/vendored/three.js"></script>
+    <script src="js/vendored/OrbitControls.js"></script>
+    <script src="js/vendored/ThreeCSG.js"></script>
+    <h1>PipeDream</h1>
+
+    <div id="controls">
+        <h2>Box Properties</h2>
+        <label for="inner-length">Inner Length (inches):</label>
+        <input type="number" id="inner-length" value="48" step="12">
+        <br>
+        <label for="inner-width">Inner Width (inches):</label>
+        <input type="number" id="inner-width" value="48" step="12">
+        <br>
+        <label for="wall-thickness">Wall Thickness (inches):</label>
+        <input type="number" id="wall-thickness" value="5">
+        <br>
+        <label for="box-height">Box Height (inches):</label>
+        <input type="number" id="box-height" value="48" step="6" min="6">
+
+        <h2>Holes</h2>
+        <table id="holes-table">
+            <thead>
+                <tr>
+                    <th>I.D. (in)</th>
+                    <th>Angle Offset (°)</th>
+                    <th>Invert (ft)</th>
+                    <th>Pipe Type</th>
+                    <th><button class="add-hole" id="add-hole">+</button></th>
+                </tr>
+            </thead>
+            <tbody id="holes-container">
+                <!-- Hole input rows will be added here -->
+            </tbody>
+        </table>
+        <button id="generate-btn">Generate</button>
+    </div>
+
+    <div id="viewer">
+        <div class="tab-bar">
+            <button class="tab-link active" data-tab="view-2d">Overhead Diagram</button>
+            <button class="tab-link" data-tab="view-3d">3D View</button>
+        </div>
+        <div id="view-2d" class="tab-content active">
+            <canvas id="canvas-2d" width="600" height="400"></canvas>
+        </div>
+
+        <div id="view-3d" class="tab-content">
+            <canvas id="canvas-3d" width="600" height="400"></canvas>
+        </div>
+    </div>
+    <script src="js/viewer2d.js"></script>
+    <script src="js/viewer3d.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

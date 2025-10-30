@@ -1,0 +1,113 @@
+/**
+ * Initializes the user interface, setting up event listeners and initial state.
+ * @param {Function} generate3DView - Callback function to generate the 3D view.
+ * @param {Function} generate2DDiagram - Callback function to generate the 2D diagram.
+ */
+
+const thicknessTable = {
+    "48": 5,
+    "60": 6,
+    "72": 7,
+    "84": 8,
+    "96": 9,
+    "120": 10,
+    "144": 12
+};
+
+function initUI(generate3DView, generate2DDiagram) {
+    const addHoleBtn = document.getElementById('add-hole');
+    const holesContainer = document.getElementById('holes-container'); // This is now the tbody
+    const generateBtn = document.getElementById('generate-btn');
+    const wallThickness = document.getElementById('wall-thickness');
+    let holeCount = 0;
+
+    // Add initial holes
+    addHole(12, 90);
+    addHole(12, 180);
+
+    addHoleBtn.addEventListener('click', () => addHole(12, holeCount * 90));
+
+    /**
+     * Adds a new hole row to the table.
+     * @param {number} [diameter=12] - The default diameter of the hole.
+     * @param {number} [angle=90] - The default angle offset of the hole.
+     * @param {number} [inset=12] - The default vertical offset of the hole.
+     */
+    function addHole(diameter, angle, inset) {
+        holeCount++;
+        const holeRow = document.createElement('tr');
+        holeRow.classList.add('hole-entry'); // Keep class for consistency in selectors
+        holeRow.innerHTML = `
+            <td><input type="number" class="hole-diameter" value="${diameter || 12}" step="3" min="0"></td>
+            <td><input type="number" class="hole-angle" value="${angle}" step="5"></td>
+            <td><input type="number" class="hole-vertical" value="${inset || 2}" min="0" step="0.1"></td>
+            <td>
+                <select class="pipe-type">
+                    <option data-thickness="2">PVC [2"]</option>
+                    <option data-thickness="4">RCP [4"]</option>
+                    <option data-thickness="2">SW-HDPE [2"]</option>
+                    <option data-thickness="3">DW-HDPE [3"]</option>
+                </select>
+            </td>
+            <td><button class="remove-hole">X</button></td>
+        `;
+        holesContainer.appendChild(holeRow);
+
+        holeRow.querySelector('.remove-hole').addEventListener('click', () => {
+            holeRow.remove();
+        });
+    }
+
+    // Tab switching logic
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            const tabId = link.getAttribute('data-tab');
+
+            tabLinks.forEach(item => item.classList.remove('active'));
+            tabContents.forEach(item => item.classList.remove('active'));
+
+            link.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    function generate() {
+        let payload = generateData();
+        // Generate 2D diagram first to avoid being blocked by 3D errors.
+        generate2DDiagram(payload);
+        setTimeout(() => generate3DView(payload));
+    }
+    generateBtn.addEventListener('click', generate);
+    generate();
+}
+
+function generateData() {
+    const innerLength = parseFloat(document.getElementById('inner-length').value);
+    const innerWidth = parseFloat(document.getElementById('inner-width').value);
+    const wallThickness = parseFloat(document.getElementById('wall-thickness').value);
+    const boxHeight = parseFloat(document.getElementById('box-height').value);
+
+    const holes = [];
+    const holeEntries = document.querySelectorAll('#holes-container .hole-entry');
+    holeEntries.forEach((hole) => {
+        const materialField = hole.querySelector('.pipe-type');
+        const materialIndex = materialField.selectedIndex;
+        const materialName = materialField.value;
+        const materialThickness = materialField.options[materialIndex].getAttribute("data-thickness");
+        const holeInnerDiameter = parseFloat(hole.querySelector('.hole-diameter').value);
+        const holeDiameter = holeInnerDiameter + 2*materialThickness + 4;
+        const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
+        const verticalOffset = parseFloat(hole.querySelector('.hole-vertical').value);
+        holes.push({ holeDiameter, holeInnerDiameter, angleOffset, verticalOffset, materialName });
+    });
+
+    return {
+        innerLength,
+        innerWidth,
+        wallThickness,
+        boxHeight,
+        holes
+    };
+}
