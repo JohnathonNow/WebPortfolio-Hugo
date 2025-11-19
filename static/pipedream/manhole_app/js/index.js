@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     init3D();
 
     // load holes.json
-    fetch('/static/holes.json')
+    fetch('static/holes.json')
         .then(response => response.json())
         .then(data => {
             window.g_holes = data;
