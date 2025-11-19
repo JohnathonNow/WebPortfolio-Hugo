@@ -22,33 +22,25 @@ function initUI(generate3DView, generate2DDiagram, generateReport) {
     let holeCount = 0;
 
     // Add initial holes
-    addHole(12, 90);
-    addHole(12, 180);
+    addHole("12.00\" OD PIPE", 90);
+    addHole("12.00\" OD PIPE", 180);
 
-    addHoleBtn.addEventListener('click', () => addHole(12, holeCount * 90));
+    addHoleBtn.addEventListener('click', () => addHole("12.00\" OD PIPE", holeCount * 90));
 
     /**
      * Adds a new hole row to the table.
-     * @param {number} [diameter=12] - The default diameter of the hole.
+     * @param {string} [hole="12.00\" OD PIPE"] - The default type of the hole.
      * @param {number} [angle=90] - The default angle offset of the hole.
-     * @param {number} [inset=12] - The default vertical offset of the hole.
+     * @param {number} [invert=12] - The default vertical offset of the hole.
      */
-    function addHole(diameter, angle, inset) {
+    function addHole(hole, angle, invert) {
         holeCount++;
         const holeRow = document.createElement('tr');
         holeRow.classList.add('hole-entry'); // Keep class for consistency in selectors
         holeRow.innerHTML = `
-            <td><input type="number" class="hole-diameter" value="${diameter || 12}" step="3" min="0"></td>
+            <td><input type="text" class="hole-type" value="${hole}" list="pipe-options"></td>
             <td><input type="number" class="hole-angle" value="${angle}" step="5"></td>
-            <td><input type="number" class="hole-vertical" value="${inset || 100}" min="0" step="0.1"></td>
-            <td>
-                <select class="pipe-type">
-                    <option data-thickness="2">PVC [2"]</option>
-                    <option data-thickness="4">RCP [4"]</option>
-                    <option data-thickness="2">SW-HDPE [2"]</option>
-                    <option data-thickness="3">DW-HDPE [3"]</option>
-                </select>
-            </td>
+            <td><input type="number" class="hole-vertical" value="${invert || 100}" min="0" step="0.1"></td>
             <td><button class="remove-hole">X</button></td>
         `;
         holesContainer.appendChild(holeRow);
@@ -96,15 +88,38 @@ function generateData() {
     const holes = [];
     const holeEntries = document.querySelectorAll('#holes-container .hole-entry');
     holeEntries.forEach((hole) => {
-        const materialField = hole.querySelector('.pipe-type');
-        const materialIndex = materialField.selectedIndex;
-        const materialName = materialField.value;
-        const materialThickness = materialField.options[materialIndex].getAttribute("data-thickness");
-        const holeInnerDiameter = parseFloat(hole.querySelector('.hole-diameter').value);
-        const holeDiameter = holeInnerDiameter + 2*materialThickness + 4;
+        const holeTypeInput = hole.querySelector('.hole-type');
+        const holeTypeValue = holeTypeInput.value;
+
+        let holeInnerDiameter = 12;
+        let holeDiameter = 16;
+
+        if (window.g_holes) {
+            const pipe = window.g_holes[holeTypeValue];
+            if (pipe) {
+                holeInnerDiameter = pipe['ID(")'];
+                holeDiameter = pipe['OD(")'] + 4; // +4 for annular space
+            } else {
+                const parsed = parseFloat(holeTypeValue);
+                if (!isNaN(parsed)) {
+                    holeInnerDiameter = parsed;
+                    holeDiameter = parsed + 4;
+                }
+            }
+        } else {
+            // Fallback if g_holes not loaded yet
+            const parsed = parseFloat(holeTypeValue);
+            if (!isNaN(parsed)) {
+                holeInnerDiameter = parsed;
+                holeDiameter = parsed + 4;
+            }
+        }
+
         const angleOffset = parseFloat(hole.querySelector('.hole-angle').value);
         const verticalOffset = parseFloat(hole.querySelector('.hole-vertical').value);
         const annularSpace = 2;
+        const materialName = holeTypeValue;
+
         holes.push({ holeDiameter, holeInnerDiameter, angleOffset, verticalOffset, materialName, annularSpace });
     });
 

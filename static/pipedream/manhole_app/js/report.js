@@ -133,7 +133,7 @@ function actuallyGenerate(data) {
         appendText(content, `Arc=${arcLength.toFixed(2)}"`);
         appendText(content, `ID: ${holeInnerDiameter}"`);
         appendText(content, `Type: ${materialName}`);
-        appendText(content, `Annualar space: ${annularSpace}"`);
+        appendText(content, `Annular space: ${annularSpace}"`);
         appendText(content, `Hole: ${holeDiameter}"`);
         appendText(content, `Invert: ${verticalOffset.toFixed(2)}'`);
     });

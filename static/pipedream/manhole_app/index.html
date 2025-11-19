@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>PipeDream</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
 <body>
     <script src="js/vendored/three.js"></script>
     <script src="js/vendored/OrbitControls.js"></script>
@@ -25,10 +27,9 @@
         <table id="holes-table">
             <thead>
                 <tr>
-                    <th>I.D. (in)</th>
+                    <th>Hole</th>
                     <th>Angle Offset (°)</th>
                     <th>Invert (ft)</th>
-                    <th>Pipe Type</th>
                     <th><button class="add-hole" id="add-hole">+</button></th>
                 </tr>
             </thead>
@@ -58,10 +59,12 @@
             <div id="report-content"></div>
         </div>
     </div>
+    <datalist id="pipe-options"></datalist>
     <script src="js/report.js"></script>
     <script src="js/viewer2d.js"></script>
     <script src="js/viewer3d.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/index.js"></script>
 </body>
+
 </html>
