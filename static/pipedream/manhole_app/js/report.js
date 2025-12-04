@@ -76,7 +76,7 @@ function actuallyGenerate(data) {
         let { holeDiameter, holeInnerDiameter, materialName, angleOffset, verticalOffset, annularSpace } = hole;
         //cumulativeAngle -= angleOffset;
         if (flipped) {
-            angleOffset = 180 - angleOffset;
+            angleOffset = 360 - angleOffset;
         }
         const angleRad = ((-angleOffset * Math.PI) / 180);
 
@@ -130,7 +130,7 @@ function actuallyGenerate(data) {
         ctx.fillText(`${index + 1}`, labelX, labelY);
         appendHeader(content, `Hole ${index + 1}`);
         ctx.font = font;
-        appendText(content, `Arc=${arcLength.toFixed(2)}"`);
+        // appendText(content, `Arc=${arcLength.toFixed(2)}"`);
         appendText(content, `ID: ${holeInnerDiameter}"`);
         appendText(content, `Type: ${materialName}`);
         appendText(content, `Annular space: ${annularSpace}"`);
@@ -192,3 +192,226 @@ function actuallyGenerate(data) {
     });
 
 }
+
+function createPdf() {
+    const { jsPDF } = window.jspdf;
+    // var doc = new jsPDF();
+    // doc.setFontSize(12);
+    // doc.text("Name:", 20, 20);
+
+    // // Create an AcroForm Text Field
+    // const { TextField } = jsPDF.AcroForm; // Destructure TextField from AcroForm
+    // const nameField = new TextField();
+    // nameField.fieldName = "userName"; // Unique name for the field
+    // nameField.Rect = [35, 15, 100, 10]; // [x, y, width, height]
+    // nameField.defaultValue = "Enter your name here"; // Optional default value
+    // nameField.multiline = false; // Set to true for multiline text
+    // nameField.maxFontSize = 12; // Optional: maximum font size for the field
+
+    // doc.addField(nameField); // Add the field to the document
+
+    // // Add another static text and a checkbox
+    // doc.text("Agree to terms:", 20, 40);
+
+    // const {CheckBox } = jsPDF.AcroForm;
+    // const termsCheckbox = new CheckBox();
+    // termsCheckbox.fieldName = "agreeTerms";
+    // termsCheckbox.Rect = [55, 35, 5, 5]; // [x, y, width, height]
+    // termsCheckbox.defaultValue = "Off"; // "On" or "Off" for default state
+
+    // doc.addField(termsCheckbox);
+
+    // // Save the PDF
+    // doc.save("acroform_example.pdf");
+    // const { jsPDF } = window.jspdf;
+
+        // Initialize document (Letter size is standard for US forms)
+        const doc = new jsPDF({
+            orientation: 'p',
+            unit: 'pt',
+            format: 'letter'
+        });
+
+        // --- CONSTANTS ---
+        const marginLeft = 40;
+        const width = 612; // Letter width in pt
+        const height = 792; // Letter height in pt
+        const contentWidth = width - (marginLeft * 2);
+        
+        // --- HELPER FUNCTIONS ---
+        function addLine(x1, y1, x2, y2) {
+            doc.setLineWidth(0.5);
+            doc.line(x1, y1, x2, y2);
+        }
+
+        function addLabel(text, x, y, fontSize = 9, font = "helvetica", style = "normal") {
+            doc.setFont(font, style);
+            doc.setFontSize(fontSize);
+            doc.text(text, x, y);
+        }
+
+        // --- HEADER ---
+        // Logo Placeholder (Top Left)
+        doc.setLineWidth(1.5);
+        // doc.triangle(50, 30, 70, 60, 30, 60, 'S'); // Abstract "A" shape for logo
+        doc.addImage("static/logo.png", "PNG", 30, 30, 60, 60);
+        
+        // Company Info
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text("ATLANTIC CONCRETE PRODUCTS, INC.", 100, 60);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.text("P.O. Box 129 - Tullytown, PA 19007-0098 - Tel. (215) 945-5600 Fax (215) 946-3102", 110, 70);
+        
+        addLine(marginLeft, 100, width - marginLeft, 100); // Header separator line
+
+        // --- TOP METADATA ---
+        let yPos = 125;
+        let fieldWidth = 80;
+        let fieldHeight = 10;
+        const { TextField } = jsPDF.AcroForm; // Destructure TextField from AcroForm
+        // Date Released
+        addLabel("DATE RELEASED:", marginLeft, yPos);
+        const dateField = new TextField();
+        dateField.fieldName = "date"; // Unique name for the field
+        dateField.Rect = [130, yPos - fieldHeight, fieldWidth, fieldHeight]; // [x, y, width, height]
+        dateField.defaultValue = ""; // Optional default value
+        dateField.multiline = false; // Set to true for multiline text
+        dateField.maxFontSize = 12; // Optional: maximum font size for the field
+        doc.addField(dateField); // Add the field to the document
+        // addLine(130, yPos, 200, yPos); // Underline
+
+        // Customer
+        addLabel("CUSTOMER :", 220, yPos);
+        const customerField = new TextField();
+        customerField.fieldName = "customer"; // Unique name for the field
+        customerField.Rect = [280, yPos - fieldHeight, fieldWidth, fieldHeight]; // [x, y, width, height]
+        customerField.defaultValue = ""; // Optional default value
+        customerField.multiline = false; // Set to true for multiline text
+        customerField.maxFontSize = 12; // Optional: maximum font size for the field
+        doc.addField(customerField); // Add the field to the document
+        // addLine(280, yPos, 400, yPos); // Underline
+
+        // Job Name
+        yPos += 25;
+        addLabel("JOB NAME:", marginLeft, yPos);
+        // addLine(100, yPos, 200, yPos); // Underline for Job Name
+        const jobField = new TextField();
+        jobField.fieldName = "job"; // Unique name for the field
+        jobField.Rect = [130, yPos - fieldHeight, fieldWidth, fieldHeight]; // [x, y, width, height]
+        jobField.defaultValue = ""; // Optional default value
+        jobField.multiline = false; // Set to true for multiline text
+        jobField.maxFontSize = 12; // Optional: maximum font size for the field
+        doc.addField(jobField); // Add the field to the document
+
+        // Structure
+        addLabel("STRUCTURE:", 220, yPos);
+        const structureField = new TextField();
+        structureField.fieldName = "structure"; // Unique name for the field
+        structureField.Rect = [280, yPos - fieldHeight, fieldWidth, fieldHeight]; // [x, y, width, height]
+        structureField.defaultValue = ""; // Optional default value
+        structureField.multiline = false; // Set to true for multiline text
+        structureField.maxFontSize = 12; // Optional: maximum font size for the field
+        doc.addField(structureField); // Add the field to the document
+        // addLine(280, yPos, 550, yPos); // Underline for Structure
+
+        // --- RIGHT COLUMN SPECS ---
+        const rightColX = 420;
+        let rightColY = 170;
+        const lineLength = 100;
+        const lineHeight = 18;
+
+        const specs = [
+            "SCHEDULE", "CAST DATE", "FORM #", "HEIGHT", 
+            "WALL", "BASE (THICK)", "LIFTER (T) 2/4/8/20", 
+            "REINF", "B.O.S"
+        ];
+
+        specs.forEach(spec => {
+            addLabel(spec, rightColX, rightColY, 8);
+            addLine(rightColX + 80, rightColY, rightColX + 80 + 50, rightColY); // Short lines
+            rightColY += lineHeight;
+        });
+
+        // --- DIAGRAM AREA (MAIN BODY) ---
+        
+        // // Box 1: Slab Top
+        // const boxLeft = 80;
+        // const box1Top = 150;
+        // const boxSize = 120;
+
+        // doc.setLineWidth(1);
+        // doc.rect(boxLeft, box1Top, boxSize, boxSize); // Main Square
+        // addLabel("36\" HOLE", boxLeft, box1Top - 10, 10, "helvetica", "bold");
+        
+        // // Circle inside box 1
+        // doc.circle(boxLeft + 30, box1Top + 30, 20); 
+
+        // // Label to the right of Box 1
+        // addLabel("SLAB TOP", boxLeft + boxSize + 30, box1Top + 40, 10);
+        // addLabel("10\" ON GRADE", boxLeft + boxSize + 30, box1Top + 55, 10);
+
+        // // Box 2: Riser
+        // const box2Top = 350;
+        // doc.rect(boxLeft, box2Top, boxSize, boxSize); // Main Square
+        
+        // // Small "tab" on left of box 2
+        // doc.rect(boxLeft - 10, box2Top + 20, 10, 20);
+
+        // // Text Labels for Box 2
+        // addLabel("27Hx29W HOLE", boxLeft + 60, box2Top - 30);
+        // addLabel("0", boxLeft + 60, box2Top - 15);
+        
+        // // Arrow pointing to box
+        // addLine(boxLeft + 70, box2Top - 10, boxLeft + 50, box2Top + 10); 
+
+        // // "6' RISER" Label
+        // addLabel("6' RISER", boxLeft + boxSize + 50, box2Top + 60, 10);
+        
+        // // Bottom hole label
+        // addLabel("27Hx29W HOLE", boxLeft + 60, box2Top + boxSize + 30);
+        // addLabel("0", boxLeft + 60, box2Top + boxSize + 45);
+        // addLine(boxLeft + 70, box2Top + boxSize + 25, boxLeft + 50, box2Top + boxSize - 10); // Arrow
+
+        // // Additional Specs (Box 4x4)
+        // addLabel("BOX   4X4", 450, 480, 10);
+        // addLabel("8\" WALLS 1350 PER FT", 450, 500, 10, "helvetica", "bold");
+
+        // // --- FOOTER GRID ---
+        // const footerY = 650;
+        // const rowHeight = 25;
+        // const col1X = marginLeft;
+        // const col2X = 150;
+        // const col3X = 400; // Unloader start
+
+        // // Horizontal Lines
+        // addLine(col1X, footerY, width - marginLeft, footerY); // Top
+        // addLine(col1X, footerY + rowHeight, width - marginLeft, footerY + rowHeight); // Middle 1
+        // addLine(col1X, footerY + (rowHeight*2), width - marginLeft, footerY + (rowHeight*2)); // Middle 2
+        // addLine(col1X, footerY + (rowHeight*3), width - marginLeft, footerY + (rowHeight*3)); // Bottom
+
+        // // Vertical Lines logic would go here, but the form uses long underlines mostly. 
+        // // I will replicate the "Table look" by placing text and lines.
+
+        // // Row 1
+        // addLabel("STEPS", col1X + 5, footerY + 15, 8, "helvetica", "bold");
+        // addLabel("BUTYL", col2X, footerY + 15, 8, "helvetica", "bold");
+        // addLabel("UNLOADER", col3X, footerY + 15, 8, "helvetica", "bold");
+
+        // // Row 2
+        // addLabel("OPENING", col1X + 5, footerY + 15 + rowHeight, 8, "helvetica", "bold");
+        // addLabel("BOLTS", col2X, footerY + 15 + rowHeight, 8, "helvetica", "bold");
+        // addLabel("JOINT", col3X, footerY + 15 + rowHeight, 8, "helvetica", "bold");
+        // addLabel("BOTTOM", col3X + 150, footerY + 15 + rowHeight, 8, "helvetica", "bold");
+
+        // // Row 3
+        // addLabel("COATING", col1X + 5, footerY + 15 + (rowHeight*2), 8, "helvetica", "bold");
+        // addLabel("MISC", col3X + 20, footerY + 15 + (rowHeight*2), 8, "helvetica", "bold");
+
+        // --- SAVE PDF ---
+        doc.save("blank_form.pdf");
+}
+
+document.getElementById("pdf-report").onclick = (e) => createPdf();

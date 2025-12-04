@@ -22,7 +22,7 @@ function initUI(generate3DView, generate2DDiagram, generateReport) {
     let holeCount = 0;
 
     // Add initial holes
-    addHole("12.00\" OD PIPE", 90);
+    addHole("12.00\" OD PIPE", 0);
     addHole("12.00\" OD PIPE", 180);
 
     addHoleBtn.addEventListener('click', () => addHole("12.00\" OD PIPE", holeCount * 90));
@@ -30,24 +30,30 @@ function initUI(generate3DView, generate2DDiagram, generateReport) {
     /**
      * Adds a new hole row to the table.
      * @param {string} [hole="12.00\" OD PIPE"] - The default type of the hole.
-     * @param {number} [angle=90] - The default angle offset of the hole.
+     * @param {number} [angle=0] - The default angle offset of the hole.
      * @param {number} [invert=12] - The default vertical offset of the hole.
      */
     function addHole(hole, angle, invert) {
+        let first = holeCount == 0;
         holeCount++;
         const holeRow = document.createElement('tr');
         holeRow.classList.add('hole-entry'); // Keep class for consistency in selectors
         holeRow.innerHTML = `
             <td><input type="text" class="hole-type" value="${hole}" list="pipe-options"></td>
-            <td><input type="number" class="hole-angle" value="${angle}" step="5"></td>
+            <td><input type="number" class="hole-angle" value="${angle}" step="5" ${first?'disabled':''}></td>
             <td><input type="number" class="hole-vertical" value="${invert || 100}" min="0" step="0.1"></td>
             <td><button class="remove-hole">X</button></td>
         `;
         holesContainer.appendChild(holeRow);
 
-        holeRow.querySelector('.remove-hole').addEventListener('click', () => {
-            holeRow.remove();
-        });
+        let xbutton = holeRow.querySelector('.remove-hole');
+        if (first) {
+            xbutton.remove();
+        } else {
+            xbutton.addEventListener('click', () => {
+                holeRow.remove();
+            });
+        }
     }
 
     // Tab switching logic

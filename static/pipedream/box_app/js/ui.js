@@ -34,12 +34,13 @@ function initUI(generate3DView, generate2DDiagram) {
      * @param {number} [inset=12] - The default vertical offset of the hole.
      */
     function addHole(diameter, angle, inset) {
+        let first = holeCount == 0;
         holeCount++;
         const holeRow = document.createElement('tr');
         holeRow.classList.add('hole-entry'); // Keep class for consistency in selectors
         holeRow.innerHTML = `
             <td><input type="number" class="hole-diameter" value="${diameter || 12}" step="3" min="0"></td>
-            <td><input type="number" class="hole-angle" value="${angle}" step="5"></td>
+            <td><input type="number" class="hole-angle" value="${angle}" step="5" disabled="${first? 1 : 0}"></td>
             <td><input type="number" class="hole-vertical" value="${inset || 2}" min="0" step="0.1"></td>
             <td>
                 <select class="pipe-type">
@@ -49,7 +50,7 @@ function initUI(generate3DView, generate2DDiagram) {
                     <option data-thickness="3">DW-HDPE [3"]</option>
                 </select>
             </td>
-            <td><button class="remove-hole">X</button></td>
+            ${first? '' : '<td><button class="remove-hole">X</button></td>'}
         `;
         holesContainer.appendChild(holeRow);
 

@@ -94,6 +94,7 @@ function generate2DDiagram(data) {
         ctx.arc(center.x, center.y, (innerDiameter / 2) * scale, -angleRad - centralAngle / 2 + Math.PI / 2, -angleRad + centralAngle / 2 + Math.PI / 2);
         ctx.stroke();
     });
+    let warnings = [];
     holes.forEach((hole, index) => {
         const { holeDiameter, holeInnerDiameter, materialName, angleOffset, verticalOffset, annularSpace } = hole;
         const angleRad = (-angleOffset * Math.PI) / 180;
@@ -145,16 +146,24 @@ function generate2DDiagram(data) {
         } else {
             arcDistance = arcDistance1;
         }
+
+        let holePair = index > 0 ? `Holes ${index}-${index + 1}` : `Holes ${holes.length}-1`;
+        
+        if (arcDistance < 6) {
+            warnings.push(`Danger Will Robinson! ${holePair} closer than 6 inches apart!!!`);
+        } else if (arcDistance < 9) {
+            warnings.push(`${holePair} closer than 9 inches apart!!`);
+        } else if (arcDistance < 12) {
+            warnings.push(`${holePair} closer than 12 inches apart!`);
+        }
         const distLabelRadius = manholeRadius - 30;
         const distLabelX = center.x + Math.cos(-midAngleRad + Math.PI / 2) * distLabelRadius;
         const distLabelY = center.y + Math.sin(-midAngleRad + Math.PI / 2) * distLabelRadius;
-        if (index > 0) {
-            ctx.fillText(`Holes ${index}-${index + 1}: Dist=${arcDistance.toFixed(2)}"`, distLabelX, distLabelY);
-        } else if (holes.length > 2) {
-            ctx.fillText(`Holes ${holes.length}-1: Dist=${arcDistance.toFixed(2)}"`, distLabelX, distLabelY);
-        }
+        ctx.fillText(`${holePair}: Dist=${arcDistance.toFixed(2)}"`, distLabelX, distLabelY);
         // }
         ctx.fillStyle = '#ffffff';
         prevCentralAngle = centralAngle;
     });
+    console.log(warnings);
+    document.getElementById("warnings").innerText = warnings.join("\n");
 }
