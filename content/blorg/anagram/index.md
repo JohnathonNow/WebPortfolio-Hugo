@@ -14,22 +14,82 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
 
 <input value="" id="letters"></input>
 
-<div id="letter-area"/>
+<div id="board"/ class="board">
 
 <script>
     console.log("hi");
-    let area = document.querySelector(".letter-area");
+    const board = document.getElementById('board');
+    let dragEl = null;
+    let placeholder = document.createElement('div');
+    placeholder.className = 'placeholder';
     document.querySelector("#letters").onchange = function(event) {
         let value = event.target.value;
         console.log(event.target.value);
-        area.innerHTML = "";
+        board.innerHTML = "";
         for (let i = 0; i < value.length; i++) {
             let element = document.createElement("div");
-            element.classList.add("letter");
+            element.classList.add("tile");
             element.textContent = value[i];
-            area.appendChild(element);
+            board.appendChild(element);
         }
     }
+
+    board.addEventListener('pointerdown', (e) => {
+        const tile = e.target.closest('.tile');
+        if (!tile) return;
+
+        dragEl = tile;
+        
+        // Create placeholder at current position
+        dragEl.after(placeholder);
+        
+        // Set initial dragging styles
+        const rect = dragEl.getBoundingClientRect();
+        dragEl.style.width = rect.width + 'px';
+        dragEl.style.height = rect.height + 'px';
+        dragEl.style.left = rect.left + 'px';
+        dragEl.style.top = rect.top + 'px';
+        
+        dragEl.classList.add('dragging');
+        dragEl.setPointerCapture(e.pointerId);
+    });
+
+    board.addEventListener('pointermove', (e) => {
+        if (!dragEl) return;
+
+        // Move tile with finger/mouse
+        dragEl.style.left = (e.clientX - 32) + 'px';
+        dragEl.style.top = (e.clientY - 32) + 'px';
+
+        // Find what we are hovering over
+        const siblings = [...board.querySelectorAll('.tile:not(.dragging)')];
+        const nextSibling = siblings.find(sib => {
+            const rect = sib.getBoundingClientRect();
+            // If mouse is past the midpoint of a sibling, move placeholder
+            return e.clientX < rect.left + rect.width / 2;
+        });
+
+        if (nextSibling) {
+            board.insertBefore(placeholder, nextSibling);
+        } else {
+            board.appendChild(placeholder);
+        }
+    });
+
+    board.addEventListener('pointerup', (e) => {
+        if (!dragEl) return;
+
+        dragEl.classList.remove('dragging');
+        dragEl.style.position = '';
+        dragEl.style.left = '';
+        dragEl.style.top = '';
+        
+        // Swap placeholder for the real tile
+        placeholder.replaceWith(dragEl);
+        
+        dragEl.releasePointerCapture(e.pointerId);
+        dragEl = null;
+    });
 </script>
 
 <style>
@@ -39,9 +99,61 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
     #letter-area {
         display: block;
     }
-    .letter {
-        width: 32px;
-        height: 32px;
-        border: 1px black;
-    }
+.board {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+            background-color: #7d5a44;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            min-height: 80px;
+        }
+
+        .tile {
+            width: 64px;
+            height: 64px;
+            background-color: #f3cf7a;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            cursor: grab;
+            box-shadow: 0 4px 0 #bfa05a;
+            user-select: none;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        /* The Ghost/Placeholder */
+        .placeholder {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .tile.dragging {
+            position: fixed; /* Detach from flex flow */
+            pointer-events: none; /* Let us see elements underneath */
+            z-index: 1000;
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            transition: none;
+        }
+
+        /* .tile::after {
+            content: attr(data-pts);
+            position: absolute;
+            bottom: 5px;
+            right: 8px;
+            font-size: 10px;
+        } */
+
 </style>
+</body>
+</html>
