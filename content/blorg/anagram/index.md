@@ -126,7 +126,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         e.preventDefault();
         let word = board.innerText;
         let element = document.createElement("p");
-        element.innerText = word;
+        element.innerText = word.replaceAll("\n", "");
         words.append(element);
     });
 </script>
