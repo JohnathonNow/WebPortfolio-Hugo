@@ -15,15 +15,17 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
 <input value="" id="letters"></input>
 
 <div id="board" class="board"></div>
+<div id="words"></div>
 
 <script>
     console.log("hi");
     const board = document.getElementById('board');
+    const words = document.getElementById('words');
     let dragEl = null;
     let placeholder = document.createElement('div');
     placeholder.className = 'placeholder';
 
-    document.querySelector("#letters").onkeydown = function(event) {
+    document.querySelector("#letters").onkeyup = function(event) {
         let value = event.target.value;
         console.log(event.target.value);
         board.innerHTML = "";
@@ -122,6 +124,10 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         dragEl.releasePointerCapture(e.pointerId);
         dragEl = null;
         e.preventDefault();
+        let word = board.innerText;
+        let element = document.createElement("p");
+        element.innerText = word;
+        words.append(element);
     });
 </script>
 
