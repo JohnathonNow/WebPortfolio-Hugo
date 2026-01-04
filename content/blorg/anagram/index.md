@@ -34,22 +34,49 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         }
     }
 
+    // Helper to animate layout changes
+    function animateLayout() {
+        const tiles = [...board.querySelectorAll('.tile:not(.dragging)')];
+        // 1. FIRST: Get current positions
+        const firstPositions = tiles.map(el => el.getBoundingClientRect());
+
+        // Perform the DOM change (this happens instantly)
+        // ... (called inside move logic)
+
+        requestAnimationFrame(() => {
+            // 2. LAST: Get new positions
+            const lastPositions = tiles.map(el => el.getBoundingClientRect());
+
+            tiles.forEach((el, i) => {
+                const dx = firstPositions[i].left - lastPositions[i].left;
+                if (dx === 0) return;
+
+                // 3. INVERSE: Move back to old position instantly
+                el.style.transition = 'none';
+                el.style.transform = `translateX(${dx}px)`;
+
+                // 4. PLAY: Smoothly transition to 0
+                requestAnimationFrame(() => {
+                    el.style.transition = 'transform 0.2s ease-out';
+                    el.style.transform = '';
+                });
+            });
+        });
+    }
+
     board.addEventListener('pointerdown', (e) => {
         const tile = e.target.closest('.tile');
         if (!tile) return;
 
         dragEl = tile;
-        
-        // Create placeholder at current position
-        dragEl.after(placeholder);
-        
-        // Set initial dragging styles
         const rect = dragEl.getBoundingClientRect();
+        
         dragEl.style.width = rect.width + 'px';
         dragEl.style.height = rect.height + 'px';
         dragEl.style.left = rect.left + 'px';
         dragEl.style.top = rect.top + 'px';
         
+        dragEl.after(placeholder);
         dragEl.classList.add('dragging');
         dragEl.setPointerCapture(e.pointerId);
     });
@@ -57,36 +84,38 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
     board.addEventListener('pointermove', (e) => {
         if (!dragEl) return;
 
-        // Move tile with finger/mouse
         dragEl.style.left = (e.clientX - 32) + 'px';
         dragEl.style.top = (e.clientY - 32) + 'px';
 
-        // Find what we are hovering over
         const siblings = [...board.querySelectorAll('.tile:not(.dragging)')];
         const nextSibling = siblings.find(sib => {
             const rect = sib.getBoundingClientRect();
-            // If mouse is past the midpoint of a sibling, move placeholder
             return e.clientX < rect.left + rect.width / 2;
         });
 
-        if (nextSibling) {
-            board.insertBefore(placeholder, nextSibling);
-        } else {
-            board.appendChild(placeholder);
+        const newPosition = nextSibling || null;
+        if (placeholder.nextSibling !== newPosition && placeholder !== newPosition) {
+            animateLayout(); // Animate others moving
+            if (newPosition) {
+                board.insertBefore(placeholder, newPosition);
+            } else {
+                board.appendChild(placeholder);
+            }
         }
     });
 
     board.addEventListener('pointerup', (e) => {
         if (!dragEl) return;
 
+        animateLayout();
         dragEl.classList.remove('dragging');
         dragEl.style.position = '';
         dragEl.style.left = '';
         dragEl.style.top = '';
+        dragEl.style.width = '';
+        dragEl.style.height = '';
         
-        // Swap placeholder for the real tile
         placeholder.replaceWith(dragEl);
-        
         dragEl.releasePointerCapture(e.pointerId);
         dragEl = null;
     });
