@@ -22,7 +22,8 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
     let dragEl = null;
     let placeholder = document.createElement('div');
     placeholder.className = 'placeholder';
-    document.querySelector("#letters").onchange = function(event) {
+
+    document.querySelector("#letters").onkeydown = function(event) {
         let value = event.target.value;
         console.log(event.target.value);
         board.innerHTML = "";
@@ -79,6 +80,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         dragEl.after(placeholder);
         dragEl.classList.add('dragging');
         dragEl.setPointerCapture(e.pointerId);
+        e.preventDefault();
     });
 
     board.addEventListener('pointermove', (e) => {
@@ -102,6 +104,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
                 board.appendChild(placeholder);
             }
         }
+        e.preventDefault();
     });
 
     board.addEventListener('pointerup', (e) => {
@@ -118,6 +121,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         placeholder.replaceWith(dragEl);
         dragEl.releasePointerCapture(e.pointerId);
         dragEl = null;
+        e.preventDefault();
     });
 </script>
 
