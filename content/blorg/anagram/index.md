@@ -38,7 +38,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
     }
 
     inputBox.onkeyup = addWord;
-    document.onload = addWord;
+    setTimeout(addWord, 100);
 
     // Helper to animate layout changes
     function animateLayout() {
@@ -128,7 +128,8 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         dragEl = null;
         e.preventDefault();
         let word = board.innerText;
-        let element = document.createElement("p");
+        let element = document.createElement("span");
+        element.onclick = () => element.remove();
         element.innerText = word.replaceAll("\n", "");
         words.append(element);
     });
