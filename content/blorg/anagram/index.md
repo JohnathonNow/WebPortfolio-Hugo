@@ -155,5 +155,3 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         } */
 
 </style>
-</body>
-</html>
