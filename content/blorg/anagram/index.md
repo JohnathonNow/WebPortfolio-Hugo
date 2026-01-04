@@ -14,7 +14,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
 
 <input value="" id="letters"></input>
 
-<div id="board"/ class="board">
+<div id="board" class="board"></div>
 
 <script>
     console.log("hi");
