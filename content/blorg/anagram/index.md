@@ -21,13 +21,13 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
     console.log("hi");
     const board = document.getElementById('board');
     const words = document.getElementById('words');
+    const inputBox = document.querySelector("#letters");
     let dragEl = null;
     let placeholder = document.createElement('div');
     placeholder.className = 'placeholder';
 
-    document.querySelector("#letters").onkeyup = function(event) {
-        let value = event.target.value;
-        console.log(event.target.value);
+    function addWord(event) {
+        let value = inputBox.value;
         board.innerHTML = "";
         for (let i = 0; i < value.length; i++) {
             let element = document.createElement("div");
@@ -36,6 +36,9 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
             board.appendChild(element);
         }
     }
+
+    inputBox.onkeyup = addWord;
+    document.onload = addWord;
 
     // Helper to animate layout changes
     function animateLayout() {
