@@ -138,6 +138,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         element.innerText = word;
         words.append(element);
     });
+    
 </script>
 
 <style>
