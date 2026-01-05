@@ -1,5 +1,5 @@
 +++
-date = "2020-23-15T02:03:30-04:00"
+date = "2020-12-15T02:03:30-04:00"
 draft = true
 title = "Cheaping out on RGB Fans - Aigo DR12 controller mod"
 tags = [ "Ads", "CircuitPython", "PC" ]

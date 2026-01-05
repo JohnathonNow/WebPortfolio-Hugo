@@ -52,6 +52,6 @@ It currently has a few built-in functions:
 <br>
 You can try out the language below:
 
-{{< editor >}}
+{{< editor />}}
 
 Type your code and hit `Run` to see the result.
