@@ -72,7 +72,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
 
     board.addEventListener('pointerdown', (e) => {
         const tile = e.target.closest('.tile');
-        if (!tile) return;
+        if (!tile || dragEl) return;
 
         dragEl = tile;
         const rect = dragEl.getBoundingClientRect();
@@ -127,11 +127,15 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         dragEl.releasePointerCapture(e.pointerId);
         dragEl = null;
         e.preventDefault();
-        let word = board.innerText;
+        let word = "";
+        for (let e of board.children) {
+            word += e.innerText || " ";
+        }
         let element = document.createElement("span");
         element.classList.add("word");
         element.onclick = () => element.remove();
-        element.innerText = word.replaceAll("\n", "");
+        console.log(word);
+        element.innerText = word;
         words.append(element);
     });
 </script>
@@ -148,6 +152,22 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
     .word {
         display: block;
         width: 100%;
+        height: 48px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        background-color: #f3cf7a;
+        border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        cursor: grab;
+        box-shadow: 0 4px 0 #bfa05a;
+        user-select: none;
+        position: relative;
+        transition: transform 0.2s ease;
     }
 
     .board {
@@ -159,6 +179,7 @@ I often do cryptic crosswords where I want to make anagrams, but I don't want to
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         position: relative;
         min-height: 80px;
+        touch-action: none;
     }
 
     .tile {
