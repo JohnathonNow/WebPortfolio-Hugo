@@ -10,12 +10,11 @@
     </article>
 </section>
 <section id="content" role="main">
-    {{ $paginator := .Paginate (where .Data.Pages ".Params.visible" "!=" false) }}
-    {{ range $paginator.Pages }}
+    {{ $pages := .Site.RegularPages }}
+    {{ range (.Paginate $pages 7).Pages }}
     {{ if not ((isset .Params "visible")) }}
     {{ .Render "li" }}
     {{ end }}
     {{ end }}
-    {{ partial "pagination.html" .Paginator }}
 </section>
 {{ partial "footer.html" . }}
