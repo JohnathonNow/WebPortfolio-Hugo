@@ -13,7 +13,7 @@ Recently I've been doing a lot of work involving indexed full text search in _Az
 To drive my points home, I'll tell my story somewhat interactively. Let's say you wanted to store the rules to a game in a mongdodb database. You might insert records such as rule_number and rule_text, containing the index of the rule in the book and the text of the rule, respectively. So, let's introduce our data:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1	| You can't just be up there and just doin' a balk like that.
 |1a	| A balk is when you
 |1b	| Okay well listen. A balk is when you balk the
@@ -38,7 +38,7 @@ One of your users, having forgotten just what a balk is, but vaguely remembering
 To their surprise, all of these documents are returned:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1b	| Okay well listen. A balk is when you balk the
 |1a	| A balk is when you
 |2 |	Do not do a balk please
@@ -52,7 +52,7 @@ To their surprise, all of these documents are returned:
 Befuddled from all the extra noise, your user reduces their search to `you can't be up there`, as they are certain these words are in the text. Here are the results:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 
 
 Your user is now even more confused about the balk rules than when they started, and they are completely lost as to how your search function works.
@@ -68,7 +68,7 @@ Now, the things we've discussed so far may have [gaslated](https://www.youtube.c
 In the text search on a text with an index, queries with words in double quotes behave much the way they do in a search engine. That is, it must match everything in quotation marks in the order it appears in the documents. There are still some quirks, though. If our user had searched `pitcher motion`, they'd get back these results:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1c-b(2)	 |You gotta be, throwing motion of the ball, and then, until you just throw it.
 |1c-a|	 The pitcher is not allowed to do a motion to the, uh, batter, that prohibits the batter from doing, you know, just trying to hit the ball. You can't do that.
 |1c-b(3)	| Okay seriously though. A balk is when the pitcher makes a movement that, as determined by, when you do a move involving the baseball and field of
@@ -77,7 +77,7 @@ In the text search on a text with an index, queries with words in double quotes 
 But if they instead search `"pitcher" "motion"` ([https://en.wikipedia.org/wiki/Jeopardy!](notice the quotation marks)), they'd instead get back:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1c-a|	 The pitcher is not allowed to do a motion to the, uh, batter, that prohibits the batter from doing, you know, just trying to hit the ball. You can't do that.
 
 So, the behavior we are seeing here is that if there are multiple search terms, if they are not in quotes we OR them together (find documents that contain _any_ of the terms). but if they are in quotes we AND them together (find only documents that contain _all_ of the terms.)
@@ -85,7 +85,7 @@ So, the behavior we are seeing here is that if there are multiple search terms, 
 This on its own isn't too bad, but if we do both searches in Azure Cosmos DB for MongoDB, we actually get back the same both times:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1c-b(2)	 |You gotta be, throwing motion of the ball, and then, until you just throw it.
 |1c-a|	 The pitcher is not allowed to do a motion to the, uh, batter, that prohibits the batter from doing, you know, just trying to hit the ball. You can't do that.
 |1c-b(3)	| Okay seriously though. A balk is when the pitcher makes a movement that, as determined by, when you do a move involving the baseball and field of
@@ -96,13 +96,13 @@ So in Azure CosmosDB for MongoDB, it would seem that search terms are always ORe
 So if you searched `"The pitcher is not allowed" "motion to the, uh, batter"`, they'd be ANDed together, so it'd only return this:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1c-a|	 The pitcher is not allowed to do a motion to the, uh, batter, that prohibits the batter from doing, you know, just trying to hit the ball. You can't do that.
 
 The cherry on top of all of this is that this stacks with the stop words removal rule. So if you searched `"The pitcher is not" "to do a motion to the"`, you might expect Azure CosmosDB for MongoDB to only return a document containing both of those phrases, but instead it will return:
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1c-b(2)	 |You gotta be, throwing motion of the ball, and then, until you just throw it.
 |1c-a|	 The pitcher is not allowed to do a motion to the, uh, batter, that prohibits the batter from doing, you know, just trying to hit the ball. You can't do that.
 |1c-b(3)	| Okay seriously though. A balk is when the pitcher makes a movement that, as determined by, when you do a move involving the baseball and field of
@@ -115,7 +115,7 @@ One final bit of frustration is that if the search query has both single word qu
 So, I guess the [moral of the story](https://www.youtube.com/watch?v=gAYL5H46QnQ) is that the rules for search terms are
 
 |rule_number	| rule_text
-|------------------------
+|-------------|-----------
 |1	| You can't just be up there and just doin' a mongodb text search like that
 |1a	| An indexed text search is when you
 |1b	| Okay well listen. A indexed text search is when you search the
