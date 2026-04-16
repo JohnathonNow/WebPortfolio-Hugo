@@ -1,5 +1,5 @@
 +++
-date = "2026-04-16T06:20:30-04:00"
+date = "2026-04-16T06:10:30-04:00"
 draft = false
 title = "You can't just be up there and just doin' a mongodb text search like that"
 heading = "Blog"
