@@ -40,6 +40,7 @@ jobs:
           cp -r public ../..
           cd ..
       - name: Clone Target Repo
+        run: |
           git clone https://github.com/johnathonnow/johnwesthoff.com jw
           cd jw
       - name: Commit files
