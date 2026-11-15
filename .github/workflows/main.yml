@@ -1,59 +1,53 @@
-# This is a basic workflow to help you get started with Actions
+name: Deploy website
 
-name: CI
-
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ markdown ]
-  pull_request:
-    branches: [ markdown ]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: [markdown]
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+permissions:
+  contents: read
+
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Check out source
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-      - name: Get Hugo
-        run: |
-          git checkout markdown
-          cd ..
-          wget https://github.com/gohugoio/hugo/releases/download/v0.77.0/hugo_0.77.0_Linux-64bit.tar.gz
-          tar -xf ./hugo_0.77.0_Linux-64bit.tar.gz
-      - name: Create local changes
-        run: |
-          cd website
-          ../../hugo
-          cp -r public ../..
-          cd ..
-      - name: Clone Target Repo
-        run: |
-          git clone https://github.com/johnathonnow/johnwesthoff.com jw
-          cd jw
-      - name: Commit files
-        run: |
-          git stash
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          cp -r ../public/* .
-          git add .
-          git commit -m "Add changes"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+          ref: markdown
+          persist-credentials: false
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-          force: true
+          hugo-version: "0.77.0"
+
+      - name: Build site
+        run: hugo --minify
+        working-directory: website
+
+      - name: Check out johnwesthoff.com
+        uses: actions/checkout@v4
+        with:
+          repository: JohnathonNow/johnwesthoff.com
+          ref: main
+          path: target
+          token: ${{ secrets.JOHNWESTHOFF_DEPLOY_TOKEN }}
+
+      - name: Copy generated site
+        run: rsync -av --delete --exclude='.git/' --exclude='CNAME' website/public/ target/
+
+      - name: Commit and push
+        run: |
+          git -C target config user.name "github-actions[bot]"
+          git -C target config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C target add --all
+
+          if git -C target diff --cached --quiet; then
+            echo "No generated site changes to deploy."
+          else
+            git -C target commit -m "Deploy site from ${GITHUB_SHA}"
+            git -C target push origin HEAD:main
+          fi
