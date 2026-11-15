@@ -26,7 +26,6 @@ jobs:
 
       - name: Build site
         run: hugo --minify
-        working-directory: website
 
       - name: Check out johnwesthoff.com
         uses: actions/checkout@v4
@@ -37,7 +36,7 @@ jobs:
           token: ${{ secrets.JOHNWESTHOFF_DEPLOY_TOKEN }}
 
       - name: Copy generated site
-        run: rsync -av --delete --exclude='.git/' --exclude='CNAME' website/public/ target/
+        run: rsync -av --delete --exclude='.git/' --exclude='CNAME' ./public/ target/
 
       - name: Commit and push
         run: |
