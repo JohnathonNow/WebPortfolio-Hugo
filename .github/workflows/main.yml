@@ -16,7 +16,7 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
         with:
-          ref: markdown
+          ref: master
           persist-credentials: false
 
       - name: Install Hugo
